@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Builds the bilingual portfolio: index.html (RU) and en/index.html (EN).
 
-All numbers live in DATA below and come from the resume (FlowCV, Oct 2026).
+Numbers live in DATA below: the resume (FlowCV, Oct 2026), Tilda and Google Ads exports
+for Minimum, and the extended OncoDiag project report.
 Derived values (cost per patient, CTR, ...) are computed here, never typed by hand.
 Edit texts in T["ru"] / T["en"], then run:  python3 build.py
 """
@@ -29,6 +30,39 @@ D["i_ctr"] = D["i_clicks"] / D["i_impr"] * 100                   # 0.97 %
 D["i_c2p"] = D["i_pat"] / D["i_clicks"] * 100                    # 0.69 %
 D["i_cpc"] = D["i_spend_usd"] / D["i_clicks"]                    # $0.18
 assert abs(D["g_rev"] / D["g_spend"] - D["roas"]) < 0.05
+
+# Minimum: site data from Tilda (lead forms and page statistics) and the Google Ads account
+SRC_RAW = [("google_search", 89), ("yandex_search", 6), ("insta", 87), ("google_maps", 36),
+           ("yandex_maps", 11), ("ref", 46), ("other", 19)]          # "how did you hear about us" in the lead form
+PAGES = [  # (ru, en, Tilda sessions, clicks from the matching per-service Google Ads campaigns, clicks approximate?)
+    ("Удаление зуба мудрости", "Wisdom tooth removal", 2161, 324, False),
+    ("Отбеливание зубов", "Teeth whitening", 2150, 170, False),
+    ("Лечение кариеса", "Caries treatment", 2146, 119, False),
+    ("Имплантация", "Dental implantation", 1764, 343, False),
+    ("Чистка зубов", "Teeth cleaning", 1732, 228, False),
+    ("Элайнеры", "Aligners", 1706, None, False),
+    ("Консультация", "Consultation", 1425, 5, False),
+    ("Протезирование", "Prosthetics and crowns", 910, 236, True),
+    ("Пломбирование", "Fillings", 833, 98, False),
+    ("Лечение каналов", "Root canal treatment", 776, 116, True),
+    ("Импланты", "Implants", 774, None, False),
+    ("Реставрация зубов", "Tooth restoration", 729, 15, False),
+    ("Виниры", "Veneers", 515, 134, False),
+]
+D.update(leads_total=773, site_sessions=87017, search_visits=31295, search_google=23900)
+D["leads_src"] = sum(v for _, v in SRC_RAW)                                        # 294
+_raw = dict(SRC_RAW)
+D["src"] = [("search", _raw["google_search"] + _raw["yandex_search"]), ("insta", _raw["insta"]),
+            ("maps", _raw["google_maps"] + _raw["yandex_maps"]), ("ref", _raw["ref"]), ("other", _raw["other"])]
+D["src_search"] = D["src"][0][1]                                                  # 95
+D["search_share"] = round(D["src_search"] / D["leads_src"] * 100)                  # 32 %
+D["pages_sessions"] = sum(p[2] for p in PAGES)                                     # 17 621
+D["ads_service_clicks"] = sum(p[3] for p in PAGES if p[3] is not None)             # 1 788
+D["pages_share"] = round(D["pages_sessions"] / D["site_sessions"] * 100)           # 20 %
+assert D["leads_src"] == 294 and D["pages_sessions"] == 17621 and D["ads_service_clicks"] == 1788
+
+# OncoDiag: extended project report
+D.update(ideas=49, lecture=44, pm_slides=14, pm_materials=200, pm_scenarios=3, promo=1000, conf_lo=250, conf_hi=400)
 
 
 def n(v, lang):
@@ -140,39 +174,50 @@ def texts(lang):
     o = {}
     o["years"] = "2025 — сейчас" if ru else "2025 — present"
     o["where"] = "RS Agency, удалённо" if ru else "RS Agency, remote"
-    o["role"] = "Marketing Strategist / Project Coordinator"
-    o["meta_l"] = ("Период", "Где", "Роль") if ru else ("Period", "Where", "Role")
+    o["role"] = "Product Marketing & GTM"
+    o["meta_l"] = ("Период", "Где", "Роль в проекте") if ru else ("Period", "Where", "Role in the project")
     o["h2"] = ("OncoDiag: вывод на рынок теста для онкодиагностики" if ru
                else "OncoDiag: taking a cancer-diagnostics test to market")
-    o["context"] = ("Инновационный продукт для диагностики рака на основе биомаркера CA-62. Покупатель здесь не один: решение проходит через врачей, лаборатории и партнёров. Поэтому работа началась с исследования, а не с рекламы."
+    o["context"] = ("Инновационный продукт для диагностики рака на основе биомаркера CA-62. Покупатель здесь не один: решение проходит через врачей, лаборатории и партнёров. Поэтому работа началась с исследования, а не с рекламы, и каждый следующий шаг проверяется на практике."
                     if ru else
-                    "An innovative cancer-diagnostics product based on the CA-62 biomarker. There's no single buyer: the decision runs through doctors, laboratories and partners. So the work started with research, not with ads.")
+                    "An innovative cancer-diagnostics product based on the CA-62 biomarker. There's no single buyer: the decision runs through doctors, laboratories and partners. So the work started with research, not with ads, and every next step gets tested in the field.")
     o["did"] = [
         f"Провёл исследование аудитории: <b>{D['resp']}+ респондентов</b> и <b>{D['interviews']} глубинных интервью</b>" if ru else f"Ran customer research with <b>{D['resp']}+ respondents</b> and <b>{D['interviews']} in-depth interviews</b>",
-        f"Сформулировал позиционирование и GTM-стратегию, собрал <b>{D['hyp']} GTM-гипотез</b>" if ru else f"Developed product positioning and GTM strategy; created <b>{D['hyp']} GTM hypotheses</b>",
-        "Выстроил B2B-маркетинг для врачей, лабораторий и партнёров" if ru else "Built B2B marketing for doctors, laboratories and partners",
+        f"Из <b>{D['ideas']} идей</b> отобрал <b>{D['hyp']} приоритетных GTM-гипотез</b> по четырём критериям: стадия продукта, реализуемость, измеримость, масштабируемость" if ru else f"Narrowed <b>{D['ideas']} ideas</b> to <b>{D['hyp']} priority GTM hypotheses</b> on four criteria: product stage, feasibility, measurability, scalability",
+        f"Финализировал позиционирование CA-62, собрал образовательную программу для врачей на <b>{D['lecture']} слайда</b> и запустил врачебный канал" if ru else f"Finalized CA-62 positioning, built a <b>{D['lecture']}-slide</b> physician education program and launched a physician channel",
+        "Подготовил скрипты для администраторов Ситилаб, материалы для лендинга и бланка результата, карточки, алгоритмы и клинические кейсы" if ru else "Prepared scripts for Citilab front-desk staff, copy for the landing page and result form, cards, algorithms and clinical cases",
         f"Сделал обучающий набор для партнёров из <b>{D['formats']} форматов</b> и <b>{D['decks']} презентации</b> продукта" if ru else f"Created a <b>{D['formats']}-format</b> partner education toolkit and <b>{D['decks']} product presentations</b>",
-        f"Поддерживал образовательные мероприятия для <b>{D['hcp']}+ медицинских специалистов</b>" if ru else f"Supported educational activities for <b>{D['hcp']}+ healthcare professionals</b>",
+        f"На конференции PreventMed: презентация на {D['pm_slides']} слайдов, <b>{D['pm_materials']}+ материалов</b>, {D['pm_scenarios']} сценария внедрения программы в клинику. Вопросы врачей вернул в обучение" if ru else f"At the PreventMed conference: a {D['pm_slides']}-slide deck, <b>{D['pm_materials']}+ materials</b> distributed, {D['pm_scenarios']} clinic adoption scenarios. Doctors' questions went back into training",
+        f"Сейчас веду активацию «Розовый октябрь» с Ситилаб: цифровой календарь здоровья, QR-воронка, ролики для холлов и пул из <b>{n(D['promo'], lang)} промокодов</b>" if ru else f"Now running a Pink October activation with Citilab: a digital health calendar, a QR funnel, lobby videos and a pool of <b>{n(D['promo'], lang)} promo codes</b>",
         "Координировал копирайтеров, дизайнеров и подрядчиков" if ru else "Coordinated copywriters, designers and project contributors",
     ]
     o["dash_h"] = "GTM-панель OncoDiag" if ru else "OncoDiag GTM panel"
     o["kpis"] = [
         (f"{D['resp']}+", "респондентов в опросе" if ru else "survey respondents"),
         (str(D["interviews"]), "глубинных интервью" if ru else "in-depth interviews"),
-        (str(D["hyp"]), "GTM-гипотез" if ru else "GTM hypotheses"),
+        (f"{D['hyp']} из {D['ideas']}" if ru else f"{D['hyp']} of {D['ideas']}", "GTM-гипотез отобрано из идей" if ru else "GTM hypotheses picked from ideas"),
+        (str(D["lecture"]), "слайда в программе для врачей" if ru else "slides in the physician program"),
         (f"{D['hcp']}+", "медицинских специалистов на обучении" if ru else "healthcare professionals trained"),
-        (str(D["formats"]), "форматов обучения партнёров" if ru else "partner education formats"),
-        (str(D["decks"]), "презентации продукта" if ru else "product presentations"),
+        (n(D["promo"], lang), "промокодов от Ситилаб на активацию" if ru else "Citilab promo codes for the activation"),
     ]
-    o["chain_h"] = "Как продукт выходит на рынок" if ru else "How the product goes to market"
-    o["chain_sub"] = "Последовательность работы" if ru else "Order of work"
-    o["chain"] = [
-        ("Исследование" if ru else "Research", f"{D['resp']}+ анкет и {D['interviews']} интервью" if ru else f"{D['resp']}+ surveys, {D['interviews']} interviews"),
-        ("Позиционирование" if ru else "Positioning", "ценность теста для каждой аудитории" if ru else "the test's value for each audience"),
-        ("Гипотезы" if ru else "Hypotheses", f"{D['hyp']} GTM-гипотез" if ru else f"{D['hyp']} GTM hypotheses"),
-        ("B2B-маркетинг" if ru else "B2B marketing", "врачи, лаборатории, партнёры" if ru else "doctors, labs, partners"),
-        ("Обучение" if ru else "Enablement", f"{D['formats']} форматов, {D['hcp']}+ специалистов" if ru else f"{D['formats']} formats, {D['hcp']}+ professionals"),
+    o["status"] = ({"done": "Готово", "active": "В работе", "next": "Готовится"} if ru
+                   else {"done": "Done", "active": "In progress", "next": "Up next"})
+    o["st_h"] = "Как продукт выходит на рынок" if ru else "How the product goes to market"
+    o["st_sub"] = "Этапы и их статус на октябрь 2026" if ru else "Stages and their status as of October 2026"
+    o["stages"] = [
+        ("Исследование" if ru else "Research", f"{D['resp']}+ анкет и {D['interviews']} интервью" if ru else f"{D['resp']}+ surveys, {D['interviews']} interviews", "done"),
+        ("Гипотезы" if ru else "Hypotheses", f"{D['ideas']} идей, {D['hyp']} взяли в работу" if ru else f"{D['ideas']} ideas, {D['hyp']} taken forward", "done"),
+        ("Позиционирование" if ru else "Positioning", f"CA-62, лекция на {D['lecture']} слайда, врачебный канал" if ru else f"CA-62, a {D['lecture']}-slide lecture, physician channel", "done"),
+        ("Полевая проверка" if ru else "Field test", f"PreventMed: {D['pm_materials']}+ материалов, вопросы врачей" if ru else f"PreventMed: {D['pm_materials']}+ materials, doctors' questions", "done"),
+        ("Активация" if ru else "Activation", f"«Розовый октябрь» с Ситилаб, {n(D['promo'], lang)} промокодов" if ru else f"Pink October with Citilab, {n(D['promo'], lang)} promo codes", "active"),
+        ("Конференция" if ru else "Conference", f"ДНКОМ, ожидается {D['conf_lo']}–{D['conf_hi']} врачей" if ru else f"DNKOM, {D['conf_lo']}–{D['conf_hi']} physicians expected", "next"),
     ]
+    o["hy_h"] = "Отбор гипотез" if ru else "Picking hypotheses"
+    o["hy_sub"] = f"{D['ideas']} идей, в работу взяли {D['hyp']}" if ru else f"{D['ideas']} ideas, {D['hyp']} taken forward"
+    o["hy_leg"] = ("идея", "гипотеза в работе") if ru else ("idea", "hypothesis taken forward")
+    o["hy_crit_h"] = "Критерии отбора" if ru else "Selection criteria"
+    o["hy_crit"] = (["подходит текущей стадии продукта", "реализуема силами команды и партнёров", "даёт измеримую обратную связь", "масштабируется, если сработает"] if ru
+                    else ["fits the product's current stage", "doable with the team and partners", "gives measurable feedback", "scales if it works"])
     o["res_h"] = "Исследование аудитории" if ru else "Customer research"
     o["res_sub"] = "Количественная и качественная часть, человек" if ru else "Quantitative and qualitative, people"
     o["res"] = [
@@ -180,13 +225,38 @@ def texts(lang):
         ("Интервью" if ru else "Interviews", D["interviews"], str(D["interviews"])),
     ]
     o["hub_h"] = "Три B2B-аудитории" if ru else "Three B2B audiences"
-    o["hub_sub"] = "Кому продаётся тест" if ru else "Who the test is sold through"
-    o["hub_core"] = ("OncoDiag", "тест на биомаркер CA-62" if ru else "CA-62 biomarker test")
+    o["hub_sub"] = "Что подготовлено для каждой" if ru else "What each one got"
+    o["hub_core"] = ("OncoDiag", "тест CA-62" if ru else "CA-62 test")
     o["hub"] = [
-        ("Врачи" if ru else "Doctors", f"образовательные мероприятия, {D['hcp']}+ специалистов" if ru else f"educational events, {D['hcp']}+ professionals"),
-        ("Лаборатории" if ru else "Laboratories", "B2B-маркетинг для лабораторий-партнёров" if ru else "B2B marketing for partner labs"),
-        ("Партнёры" if ru else "Partners", f"обучающий набор из {D['formats']} форматов" if ru else f"a {D['formats']}-format education toolkit"),
+        ("Врачи" if ru else "Doctors", f"лекция на {D['lecture']} слайда, врачебный канал, {D['hcp']}+ специалистов на обучении" if ru else f"a {D['lecture']}-slide lecture, a physician channel, {D['hcp']}+ professionals trained"),
+        ("Лаборатории" if ru else "Laboratories", "скрипты для администраторов Ситилаб, материалы для бланка результата" if ru else "scripts for Citilab front desk, copy for the result form"),
+        ("Партнёры" if ru else "Partners", f"обучающий набор из {D['formats']} форматов, {D['decks']} презентации продукта" if ru else f"a {D['formats']}-format toolkit, {D['decks']} product presentations"),
     ]
+    o["pm_h"] = "PreventMed: проверка на врачах" if ru else "PreventMed: field test with doctors"
+    o["pm_sub"] = "Профильная медицинская конференция" if ru else "A professional medical conference"
+    o["pm"] = [
+        (str(D["pm_slides"]), "слайдов в отдельной презентации" if ru else "slides in a dedicated deck"),
+        (f"{D['pm_materials']}+", "материалов роздано" if ru else "materials distributed"),
+        (str(D["pm_scenarios"]), "сценария внедрения программы в клинику" if ru else "clinic adoption scenarios"),
+        ("1", "система скриптов для работы на мероприятии" if ru else "script system for the event"),
+    ]
+    o["pm_note"] = ("Вопросы и возражения врачей вернулись в обучение и в коммуникацию продукта." if ru
+                    else "Doctors' questions and objections fed back into training and product messaging.")
+    o["po_h"] = "«Розовый октябрь» × Ситилаб" if ru else "Pink October × Citilab"
+    o["po_sub"] = "Партнёрская активация, идёт сейчас. Путь пациента:" if ru else "Partner activation, running now. The patient's path:"
+    o["po_chain"] = [
+        ("Календарь здоровья" if ru else "Health calendar", "цифровой, с важными датами" if ru else "digital, with key dates"),
+        ("QR или ссылка" if ru else "QR or link", "в календаре и на экранах в холлах" if ru else "in the calendar and on lobby screens"),
+        ("Карточка CA-62" if ru else "CA-62 card", "в корзине Ситилаб" if ru else "in the Citilab cart"),
+        ("Промокод" if ru else "Promo code", f"из пула в {n(D['promo'], lang)} кодов" if ru else f"from a pool of {n(D['promo'], lang)}"),
+        ("Сдача анализа" if ru else "Test taken", "в лаборатории Ситилаб" if ru else "at a Citilab lab"),
+    ]
+    o["po_out_h"] = "Уже сделано" if ru else "Done so far"
+    o["po_out"] = ([f"{n(D['promo'], lang)} промокодов согласовано с Ситилаб", "цифровой календарь и QR-механика", "ролики для экранов в холлах", "материалы и призывы к действию встроены в путь"] if ru
+                   else [f"{n(D['promo'], lang)} promo codes agreed with Citilab", "digital calendar and QR mechanic", "videos for lobby screens", "materials and calls to action built into the path"])
+    o["po_measure_h"] = "Что считаю" if ru else "What I'm tracking"
+    o["po_measure"] = ("Сканирования QR, переходы, использованные промокоды, заказы и сданные анализы. Цифры появятся здесь после кампании." if ru
+                       else "QR scans, clicks, promo-code uses, orders and completed tests. The numbers will land here after the campaign.")
     o["mx_h"] = (f"Сегментация {D['specs']} медицинских специальностей" if ru
                  else f"Segmentation of {D['specs']} medical specialties")
     o["mx_sub"] = ("Ещё в RS Agency: матрица для коммерческих предложений агентства. Каждая клетка — отдельное сочетание специальности и типа клиента со своим типом продажи, каналами, оффером и KPI."
@@ -196,7 +266,20 @@ def texts(lang):
     o["mx_axis"] = ("1", f"{D['specs']} специальностей" if ru else f"{D['specs']} specialties")
     o["tbl_cap"] = "Ключевые цифры OncoDiag и RS Agency" if ru else "Key figures, OncoDiag and RS Agency"
     o["tbl_cols"] = ("Показатель", "Значение") if ru else ("Metric", "Value")
-    o["tbl"] = [(lab, val) for val, lab in o["kpis"]] + [
+    o["tbl"] = [
+        ("респондентов в опросе" if ru else "survey respondents", f"{D['resp']}+"),
+        ("глубинных интервью" if ru else "in-depth interviews", str(D["interviews"])),
+        ("идей для GTM" if ru else "GTM ideas", str(D["ideas"])),
+        ("приоритетных GTM-гипотез" if ru else "priority GTM hypotheses", str(D["hyp"])),
+        ("слайдов в программе для врачей" if ru else "slides in the physician program", str(D["lecture"])),
+        ("медицинских специалистов на обучении" if ru else "healthcare professionals trained", f"{D['hcp']}+"),
+        ("форматов обучения партнёров" if ru else "partner education formats", str(D["formats"])),
+        ("презентаций продукта" if ru else "product presentations", str(D["decks"])),
+        ("слайдов в презентации для PreventMed" if ru else "slides in the PreventMed deck", str(D["pm_slides"])),
+        ("материалов роздано на PreventMed" if ru else "materials distributed at PreventMed", f"{D['pm_materials']}+"),
+        ("сценариев внедрения в клинику" if ru else "clinic adoption scenarios", str(D["pm_scenarios"])),
+        ("промокодов на «Розовый октябрь»" if ru else "Pink October promo codes", n(D["promo"], lang)),
+        ("ожидаемая аудитория конференции ДНКОМ, врачей" if ru else "expected DNKOM conference audience, physicians", f"{D['conf_lo']}–{D['conf_hi']}"),
         ("медицинских специальностей в матрице" if ru else "medical specialties in the matrix", str(D["specs"])),
         ("типа клиентов агентства" if ru else "agency client types", str(D["client_types"])),
     ]
@@ -207,7 +290,7 @@ def texts(lang):
     d["years"] = "2023 — 2025"
     d["where"] = "Батуми, Грузия" if ru else "Batumi, Georgia"
     d["role"] = "Growth & Performance Marketing Lead"
-    d["meta_l"] = o["meta_l"]
+    d["meta_l"] = ("Период", "Где", "Роль") if ru else ("Period", "Where", "Role")
     d["h2"] = ("Minimum Innovative Dentistry: пациенты из трёх каналов" if ru
                else "Minimum Innovative Dentistry: patients from three channels")
     d["context"] = ("Частная стоматология в Батуми. Цель была не «вести рекламу», а приводить пациентов и знать, сколько выручки принёс каждый канал. Для этого реклама, страницы услуг, WhatsApp, запись и CRM работали как одна цепочка."
@@ -216,8 +299,10 @@ def texts(lang):
     d["did"] = [
         "Построил и вёл <b>3 воронки привлечения</b>: Google Ads, Instagram и органический поиск" if ru else "Built and managed <b>3 acquisition funnels</b> across Google Ads, Instagram and organic search",
         "Связал рекламу со страницами услуг, CRM, WhatsApp, записью, пациентами и выручкой" if ru else "Connected acquisition with landing pages, CRM, WhatsApp, appointments, patients and revenue",
+        f"Создал <b>{D['seo_pages']} посадочных страниц</b> под конкретные стоматологические запросы и использовал их и в SEO, и в Google Ads: <b>{dec(D['pages_sessions'] / 1000, lang)} тыс. сессий</b> за период" if ru else f"Built <b>{D['seo_pages']} service-specific landing pages</b> around dental search demand and used them for both SEO and Google Ads: <b>{dec(D['pages_sessions'] / 1000, lang)}K sessions</b> over the period",
+        f"Запустил отдельные поисковые кампании Google Ads под услуги: около <b>{dec(D['ads_service_clicks'] / 1000, lang)} тыс. кликов</b> прямо на страницы услуг" if ru else f"Ran dedicated Google Ads search campaigns per service: about <b>{dec(D['ads_service_clicks'] / 1000, lang)}K clicks</b> straight to the service pages",
+        f"Разобрал заявки с сайта: <b>{D['leads_total']}</b> за период, источник указан в {D['leads_src']}, и <b>{D['search_share']}%</b> из них — поиск Google и Яндекса" if ru else f"Analysed site leads: <b>{D['leads_total']}</b> over the period, {D['leads_src']} named a source, and <b>{D['search_share']}%</b> of those came from Google or Yandex search",
         f"Вёл рекламу в Instagram: <b>{n(637, lang)} тыс.+ показов</b> и <b>6,2 тыс.+ переходов</b> при бюджете около $1,1 тыс." if ru else "Managed Instagram paid campaigns: <b>637K+ impressions</b> and <b>6.2K+ link clicks</b> on about $1.1K spend",
-        f"Собрал SEO-воронку из <b>{D['seo_pages']} страниц</b> под конкретные услуги" if ru else f"Built an SEO conversion funnel with <b>{D['seo_pages']} service-specific pages</b>",
         f"Разработал маркетинговую стратегию для <b>{D['segments']} сегментов</b> аудитории" if ru else f"Developed marketing strategy for <b>{D['segments']} audience segments</b>",
         f"Выстроил контент-систему: <b>{D['pillars']} рубрик</b> и <b>{D['posts']} постов</b> в Instagram" if ru else f"Built a content system with <b>{D['pillars']} content pillars</b> and <b>{D['posts']} Instagram posts</b>",
         "Снимал фото и видео: врачи, клинические случаи, Reels и Stories" if ru else "Produced photo and video content: doctors, cases, Reels and Stories",
@@ -228,12 +313,15 @@ def texts(lang):
                 ("insta", "Instagram", "var(--insta)"), ("seo", "SEO", "var(--seo)")]
     d["seg_label"] = "Канал" if ru else "Channel"
     calc = "расчёт" if ru else "calculated"
+    k_sess = f"{dec(D['pages_sessions'] / 1000, lang)} тыс." if ru else f"{dec(D['pages_sessions'] / 1000, lang)}K"
+    k_search = f"{dec(D['search_visits'] / 1000, lang)} тыс." if ru else f"{dec(D['search_visits'] / 1000, lang)}K"
+    k_google = f"{dec(D['search_google'] / 1000, lang)} тыс." if ru else f"{dec(D['search_google'] / 1000, lang)}K"
     d["kpis"] = {
         "all": [
             (money(D["g_rev"]), "выручка из Google Ads" if ru else "Google Ads revenue", "var(--google)", None),
             (money(D["i_rev"]), "выручка из Instagram" if ru else "Instagram revenue", "var(--insta)", None),
-            (str(D["seo_pages"]), "SEO-страниц под услуги" if ru else "SEO service pages", "var(--seo)", None),
-            (f"{n(D['followers'], lang)}+", "целевых подписчиков" if ru else "targeted followers", "var(--insta)", None),
+            (str(D["leads_total"]), "заявок через формы сайта" if ru else "leads through site forms", None, None),
+            (k_sess, f"сессий на {D['seo_pages']} страницах услуг" if ru else f"sessions on {D['seo_pages']} service pages", None, None),
         ],
         "google": [
             (money(D["g_spend"]), "бюджет" if ru else "spend", "var(--google)", None),
@@ -253,7 +341,10 @@ def texts(lang):
         ],
         "seo": [
             (str(D["seo_pages"]), "страниц под конкретные услуги" if ru else "service-specific pages", "var(--seo)", None),
-            ("WhatsApp", "куда ведёт страница" if ru else "where each page hands off", "var(--seo)", None),
+            (k_search, "переходов из поисковых систем" if ru else "visits from search engines", "var(--seo)",
+             f"около трети трафика, из них ~{k_google} из Google" if ru else f"about a third of traffic, ~{k_google} from Google"),
+            (str(D["src_search"]), "заявок, где указан поиск Google или Яндекса" if ru else "leads that named Google or Yandex search", "var(--seo)",
+             f"{D['search_share']}% заявок с указанным источником" if ru else f"{D['search_share']}% of leads that named a source"),
             ("—", "отдельной атрибуции выручки нет" if ru else "no separate revenue attribution", "var(--seo)", None),
         ],
     }
@@ -281,15 +372,26 @@ def texts(lang):
     d["flow_sub"] = "Одна цепочка для всех каналов" if ru else "One chain for every channel"
     d["flow"] = [
         ("Реклама или поиск" if ru else "Ad or search", "Google Ads, Instagram, органика" if ru else "Google Ads, Instagram, organic"),
-        ("Страница услуги" if ru else "Service page", "под конкретный запрос" if ru else "matches the exact query"),
-        ("WhatsApp", "переписка с клиникой" if ru else "a chat with the clinic"),
+        ("Страница услуги" if ru else "Service page", f"одна из {D['seo_pages']}, под конкретный запрос" if ru else f"one of {D['seo_pages']}, matching the query"),
+        ("WhatsApp или форма" if ru else "WhatsApp or form", "заявка в клинику" if ru else "an inquiry to the clinic"),
         ("Запись" if ru else "Appointment", "время у врача" if ru else "a slot with the doctor"),
         ("Пациент в CRM" if ru else "Patient in CRM", "источник сохранён" if ru else "source is kept"),
         ("Выручка" if ru else "Revenue", "видно по каждому каналу" if ru else "visible per channel"),
     ]
-    d["seo_h"] = "SEO-воронка" if ru else "SEO funnel"
-    d["seo_sub"] = (f"{D['seo_pages']} страниц под услуги, с каждой — сразу в WhatsApp" if ru
-                    else f"{D['seo_pages']} service pages, each handing off straight to WhatsApp")
+    d["pages_h"] = "Посадочные страницы под услуги" if ru else "Service landing pages"
+    d["pages_sub"] = (f"Сессии за период по данным Tilda, все источники вместе: органика, реклама, прямые заходы. Отдельные кампании Google Ads под услуги дали на эти страницы около {dec(D['ads_service_clicks'] / 1000, lang)} тыс. кликов."
+                      if ru else
+                      f"Sessions over the period from Tilda, all sources combined: organic, ads and direct. Dedicated Google Ads campaigns sent about {dec(D['ads_service_clicks'] / 1000, lang)}K clicks to these pages.")
+    d["pages"] = [(ru_name if ru else en_name, s, c, approx) for ru_name, en_name, s, c, approx in PAGES]
+    d["pages_unit"] = "сессий" if ru else "sessions"
+    d["pages_share"] = (f"{D['pages_share']}% всех сессий сайта пришлись на эти {D['seo_pages']} страниц" if ru
+                        else f"{D['pages_share']}% of all site sessions landed on these {D['seo_pages']} pages")
+    d["src_h"] = "Откуда пациенты узнали о клинике" if ru else "How patients heard about the clinic"
+    d["src_sub"] = (f"Ответ в форме заявки: источник указан в {D['leads_src']} из {D['leads_total']} заявок" if ru
+                    else f"Answer in the lead form: {D['leads_src']} of {D['leads_total']} leads named a source")
+    d["src_names"] = ({"search": "Поиск Google и Яндекса", "insta": "Instagram", "maps": "Карты Google и Яндекса", "ref": "Рекомендации", "other": "Другое"} if ru
+                      else {"search": "Google and Yandex search", "insta": "Instagram", "maps": "Google and Yandex Maps", "ref": "Referrals", "other": "Other"})
+    d["src_unit"] = "заявок" if ru else "leads"
     d["posts_h"] = "Контент в Instagram" if ru else "Instagram content"
     d["posts_sub"] = (f"{D['posts']} постов в {D['pillars']} рубриках, плюс Reels и Stories" if ru
                       else f"{D['posts']} posts across {D['pillars']} pillars, plus Reels and Stories")
@@ -300,11 +402,23 @@ def texts(lang):
         ("Google Ads", money(D["g_spend"]), money(D["g_rev"]), n(D["g_pat"], lang), f"ROAS {dec(D['roas'], lang)}×"),
         ("Instagram", "~$1,1 тыс." if ru else "~$1.1K", money(D["i_rev"]), str(D["i_pat"]),
          "637 тыс.+ показов, 6,2 тыс.+ переходов" if ru else "637K+ impressions, 6.2K+ clicks"),
-        ("SEO", "—", "—", "—", f"{D['seo_pages']} страниц услуг, переход в WhatsApp" if ru else f"{D['seo_pages']} service pages, WhatsApp handoff"),
+        ("SEO", "—", "—", "—", f"{n(D['search_visits'], lang)} переходов из поисковых систем" if ru else f"{n(D['search_visits'], lang)} visits from search engines"),
     ]
-    d["note"] = ("Выручка атрибутированная: обращения из рекламы связаны с записями, пациентами и оплатами. Значения с «~» посчитаны по этим данным."
+    d["tbl2_cap"] = "Страницы услуг: сессии в Tilda и клики из кампаний Google Ads под услугу" if ru else "Service pages: Tilda sessions and clicks from per-service Google Ads campaigns"
+    d["tbl2_cols"] = ("Страница", "Сессии", "Клики Google Ads") if ru else ("Page", "Sessions", "Google Ads clicks")
+    d["tbl2"] = ([(name, n(s, lang), ("~" if approx else "") + n(c, lang) if c is not None else "—") for name, s, c, approx in d["pages"]]
+                 + [("Итого" if ru else "Total", n(D["pages_sessions"], lang), n(D["ads_service_clicks"], lang))])
+    d["tbl3_cap"] = "Источник, который пациент указал в заявке" if ru else "Source the patient named in the lead form"
+    d["tbl3_cols"] = ("Источник", "Заявки", "Доля") if ru else ("Source", "Leads", "Share")
+    raw_names = ({"google_search": "Поиск Google", "yandex_search": "Поиск Яндекса", "insta": "Instagram", "google_maps": "Google Карты",
+                  "yandex_maps": "Яндекс Карты", "ref": "Рекомендации", "other": "Другое"} if ru else
+                 {"google_search": "Google Search", "yandex_search": "Yandex Search", "insta": "Instagram", "google_maps": "Google Maps",
+                  "yandex_maps": "Yandex Maps", "ref": "Referrals", "other": "Other"})
+    d["tbl3"] = ([(raw_names[k], str(v), f"{round(v / D['leads_src'] * 100)}%") for k, v in SRC_RAW]
+                 + [("Итого с указанным источником" if ru else "Total that named a source", str(D["leads_src"]), "100%")])
+    d["note"] = ("Выручка атрибутированная: обращения из рекламы связаны с записями, пациентами и оплатами. Сессии страниц услуг включают все источники трафика. Источник заявки пациент указывал сам, среди поисковых есть несколько тестовых заявок. Значения с «~» посчитаны по этим данным."
                  if ru else
-                 "Revenue is attributed: ad inquiries are linked to appointments, patients and payments. Values marked “~” are calculated from that data.")
+                 "Revenue is attributed: ad inquiries are linked to appointments, patients and payments. Service-page sessions include every traffic source. Lead sources are self-reported, and a few test leads sit among the search ones. Values marked “~” are calculated from that data.")
     t["dental"] = d
 
     # ---- Community
@@ -385,9 +499,9 @@ def texts(lang):
         ("Исследую" if ru else "Research", "Опросы и глубинные интервью до того, как тратить бюджет. Ищу, кто принимает решение и что его останавливает." if ru else "Surveys and in-depth interviews before any budget is spent. I look for who decides and what stops them.",
          f"OncoDiag: {D['resp']}+ респондентов, {D['interviews']} интервью" if ru else f"OncoDiag: {D['resp']}+ respondents, {D['interviews']} interviews"),
         ("Позиционирую" if ru else "Position", "Формулирую ценность для каждой аудитории и превращаю её в гипотезы, которые можно проверить." if ru else "I define the value for each audience and turn it into hypotheses that can be tested.",
-         f"OncoDiag: {D['hyp']} GTM-гипотез" if ru else f"OncoDiag: {D['hyp']} GTM hypotheses"),
+         f"OncoDiag: {D['hyp']} гипотез из {D['ideas']} идей" if ru else f"OncoDiag: {D['hyp']} hypotheses out of {D['ideas']} ideas"),
         ("Строю каналы" if ru else "Build channels", "Реклама, SEO, контент, партнёрства и блогеры. У каждого канала своя воронка и своя страница." if ru else "Ads, SEO, content, partnerships and influencers. Each channel gets its own funnel and its own page.",
-         "Стоматология: 3 воронки, 13 SEO-страниц" if ru else "Dental: 3 funnels, 13 SEO pages"),
+         f"Стоматология: 13 страниц услуг, {dec(D['pages_sessions'] / 1000, lang)} тыс. сессий" if ru else f"Dental: 13 service pages, {dec(D['pages_sessions'] / 1000, lang)}K sessions"),
         ("Считаю выручку" if ru else "Count revenue", "Связываю обращение с записью, пациентом и оплатой, чтобы бюджет шёл туда, где он окупается." if ru else "I link each inquiry to an appointment, a patient and a payment, so budget goes where it pays back.",
          f"Google Ads: ROAS {dec(D['roas'], lang)}×" if ru else f"Google Ads: {dec(D['roas'], lang)}x ROAS"),
     ]
@@ -437,8 +551,8 @@ def kpi_cells(items, with_dot=False):
     return "".join(out)
 
 
-def hbars(rows, maxv, color_map, none_text, unit_label, lang):
-    out = ['<div class="hbars">']
+def hbars(rows, maxv, color_map, none_text, unit_label, lang, cls=""):
+    out = [f'<div class="{("hbars " + cls).strip()}">']
     for key, name, v, vs in rows:
         col = color_map.get(key, "var(--onco)")
         dot = f'<i style="background:{col}"></i>'
@@ -456,11 +570,19 @@ def hbars(rows, maxv, color_map, none_text, unit_label, lang):
     return "".join(out)
 
 
-def chain(items, numbered=True):
+def chain(items, status_names=None):
+    """A numbered sequence. Items are (title, text) or (title, text, status) with status done/active/next."""
     out = [f'<ol class="chain" style="--n:{len(items)}">']
-    for i, (h, p) in enumerate(items, 1):
-        cls = ' class="end"' if i == len(items) else ""
-        out.append(f'<li{cls}><span class="dot">{i}</span><h5>{e(h)}</h5><p>{e(p)}</p></li>')
+    for i, it in enumerate(items, 1):
+        h, p = it[0], it[1]
+        st = it[2] if len(it) > 2 else None
+        if st:
+            cls = f' class="s-{st}"'
+            badge = f'<span class="status s-{st}"><i></i>{e(status_names[st])}</span>'
+        else:
+            cls = ' class="end"' if i == len(items) else ""
+            badge = ""
+        out.append(f'<li{cls}><span class="dot">{i}</span><h5>{e(h)}</h5><p>{e(p)}</p>{badge}</li>')
     out.append("</ol>")
     return "".join(out)
 
@@ -535,15 +657,30 @@ def render(lang):
     for i, lab in enumerate(o["mx_rows"], 1):
         cells = "<span></span>" * D["specs"]
         mx_rows.append(f'<div class="matrix-label">{e(lab)}</div><div class="matrix-row r{i}">{cells}</div>')
+    units = "".join('<span class="on"></span>' if i < D["hyp"] else "<span></span>" for i in range(D["ideas"]))
+    crit = "".join(f"<li>{e(x)}</li>" for x in o["hy_crit"])
+    pm = "".join(f'<div><b>{e(v)}</b><span>{e(lab)}</span></div>' for v, lab in o["pm"])
+    po_out = "".join(f"<li>{e(x)}</li>" for x in o["po_out"])
     onco_dash = f'''<div class="dash">
   {dash_bar(o["dash_h"], o["years"], tbl_toggle("tbl-onco", t))}
   <div class="dtable-wrap" id="tbl-onco" hidden>{table(o["tbl_cap"], o["tbl_cols"], o["tbl"], num_cols=(1,))}</div>
   <div class="kpis">{kpi_cells(o["kpis"])}</div>
   <div class="panels">
-    <section class="panel wide"><h4>{e(o["chain_h"])}</h4><p class="sub">{e(o["chain_sub"])}</p>{chain(o["chain"])}</section>
+    <section class="panel wide"><h4>{e(o["st_h"])}</h4><p class="sub">{e(o["st_sub"])}</p>{chain(o["stages"], o["status"])}</section>
+    <section class="panel"><h4>{e(o["hy_h"])}</h4><p class="sub">{e(o["hy_sub"])}</p>
+      <div class="hyp"><div class="units" role="img" aria-label="{e(o["hy_sub"])}">{units}</div>
+      <div><h5 class="mini-h">{e(o["hy_crit_h"])}</h5><ul class="crit">{crit}</ul></div></div>
+      <div class="legend"><span><i class="u"></i>{e(o["hy_leg"][0])}</span><span><i class="u on"></i>{e(o["hy_leg"][1])}</span></div></section>
     <section class="panel"><h4>{e(o["res_h"])}</h4><p class="sub">{e(o["res_sub"])}</p>{res}</section>
     <section class="panel"><h4>{e(o["hub_h"])}</h4><p class="sub">{e(o["hub_sub"])}</p>
       <div class="hub"><div class="hub-core"><b>{e(o["hub_core"][0])}</b><span>{e(o["hub_core"][1])}</span></div>{hub_nodes}</div></section>
+    <section class="panel"><h4>{e(o["pm_h"])}</h4><p class="sub">{e(o["pm_sub"])}</p>
+      <div class="minikpis">{pm}</div><p class="panel-note">{e(o["pm_note"])}</p></section>
+    <section class="panel wide"><div class="panel-head"><div><h4>{e(o["po_h"])}</h4><p class="sub">{e(o["po_sub"])}</p></div>
+      <span class="status s-active"><i></i>{e(o["status"]["active"])}</span></div>
+      {chain(o["po_chain"])}
+      <div class="po-foot"><div><h5 class="mini-h">{e(o["po_out_h"])}</h5><ul class="crit">{po_out}</ul></div>
+      <div><h5 class="mini-h">{e(o["po_measure_h"])}</h5><p class="panel-note">{e(o["po_measure"])}</p></div></div></section>
     <section class="panel wide"><h4>{e(o["mx_h"])}</h4><p class="sub">{e(o["mx_sub"])}</p>
       <div class="matrix" role="img" aria-label="{e(o["mx_h"])}: {D['specs']} × {D['client_types']}">{"".join(mx_rows)}
       <div class="matrix-axis"><span>{e(o["mx_axis"][0])}</span><span>{e(o["mx_axis"][1])}</span></div></div></section>
@@ -569,15 +706,16 @@ def render(lang):
             lad.append(f'<div class="ladder-step"><span>{e(lab)}</span><b>{e(val)}</b></div>')
         else:
             lad.append(f'<div class="ladder-rate">{ICON["step"]}<span><b>{e(val)}</b> {e(lab)}</span></div>')
-    pages = "".join(PAGE for _ in range(D["seo_pages"]))
-    seo_vis = (f'<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap" role="img" aria-label="{e(d["seo_sub"])}">'
-               f'<div style="display:grid;grid-template-columns:repeat(7,18px);gap:6px">{pages}</div>'
-               f'<svg viewBox="0 0 40 16" width="40" height="16" aria-hidden="true"><path d="M2 8h34M30 2l6 6-6 6" fill="none" stroke="var(--ink)" stroke-width="1.6"/></svg>'
-               f'<div style="width:44px">{CHAT}</div></div>')
+    page_rows = [("page", name, s, n(s, lang)) for name, s, c, approx in d["pages"]]
+    pages_chart = hbars(page_rows, max(s for _, _, s, _ in page_rows), {"page": "var(--mixed)"}, "", d["pages_unit"], lang, cls="names")
+    src_rows = [("src", d["src_names"][k], v, f"{v} ({round(v / D['leads_src'] * 100)}%)") for k, v in D["src"]]
+    src_chart = hbars(src_rows, max(v for _, _, v, _ in src_rows), {"src": "var(--mixed)"}, "", d["src_unit"], lang, cls="names")
     posts = "<span></span>" * D["posts"]
     dental_dash = f'''<div class="dash" data-view="all">
   {dash_bar(d["dash_h"], d["years"], seg_html + tbl_toggle("tbl-dental", t))}
-  <div class="dtable-wrap" id="tbl-dental" hidden>{table(d["tbl_cap"], d["tbl_cols"], d["tbl"], num_cols=(1, 2, 3))}</div>
+  <div class="dtable-wrap" id="tbl-dental" hidden>{table(d["tbl_cap"], d["tbl_cols"], d["tbl"], num_cols=(1, 2, 3))}
+    {table(d["tbl2_cap"], d["tbl2_cols"], d["tbl2"], num_cols=(1, 2))}
+    {table(d["tbl3_cap"], d["tbl3_cols"], d["tbl3"], num_cols=(1, 2))}</div>
   {kpi_groups}
   <div class="panels">
     <section class="panel" data-ch="all google insta"><h4>{e(d["rev_h"])}</h4><p class="sub">{e(d["rev_sub"])}</p>{rev}</section>
@@ -585,7 +723,9 @@ def render(lang):
     <section class="panel" data-ch="google"><h4>{e(d["coin_h"])}</h4><p class="sub">{e(d["coin_sub"])}</p><div class="coins">{coin_rows}</div></section>
     <section class="panel" data-ch="insta"><h4>{e(d["lad_h"])}</h4><p class="sub">{e(d["lad_sub"])}</p><div class="ladder">{"".join(lad)}</div></section>
     <section class="panel wide" data-ch="all"><h4>{e(d["flow_h"])}</h4><p class="sub">{e(d["flow_sub"])}</p>{chain(d["flow"])}</section>
-    <section class="panel" data-ch="seo"><h4>{e(d["seo_h"])}</h4><p class="sub">{e(d["seo_sub"])}</p>{seo_vis}</section>
+    <section class="panel wide" data-ch="google seo"><h4>{e(d["pages_h"])}</h4><p class="sub">{e(d["pages_sub"])}</p>{pages_chart}
+      <p class="panel-note">{e(d["pages_share"])}</p></section>
+    <section class="panel" data-ch="all"><h4>{e(d["src_h"])}</h4><p class="sub">{e(d["src_sub"])}</p>{src_chart}</section>
     <section class="panel" data-ch="insta"><h4>{e(d["posts_h"])}</h4><p class="sub">{e(d["posts_sub"])}</p>
       <div class="posts" role="img" aria-label="{e(d["posts_sub"])}">{posts}</div>
       <div class="legend"><span><i style="background:var(--insta-wash)"></i>{e(d["posts_leg"][0])}</span><span>{e(d["posts_leg"][1])}</span></div></section>
@@ -764,7 +904,9 @@ def render(lang):
 def keep_numbers_together(html):
     """'1 800' must never break across lines: swap the plain space for a no-break space."""
     import re
-    return re.sub(r"(?<=\d) (?=\d{3}\b)", "\u00a0", html)
+    fix = lambda txt: re.sub(r"(?<=\d) (?=\d{3}\b)", "\u00a0", txt)
+    # only touch text between tags, never attributes such as an SVG viewBox
+    return re.sub(r">([^<]+)<", lambda m: ">" + fix(m.group(1)) + "<", html)
 
 
 if __name__ == "__main__":
