@@ -521,6 +521,13 @@ def texts(lang):
     t["c_where"] = "Грузия, удалённо" if ru else "Georgia, remote"
     t["c_btn_mail"] = "Написать письмо" if ru else "Write an email"
     t["c_btn_li"] = "Открыть LinkedIn" if ru else "Open LinkedIn"
+    t["ck_label"] = "Cookies"
+    t["ck_text"] = ("Сайт использует Яндекс Метрику и cookies, чтобы я видел, какие кейсы читают. Без вашего согласия статистика не собирается."
+                    if ru else
+                    "This site uses Yandex Metrica and cookies so I can see which cases people read. Nothing is tracked unless you allow it.")
+    t["ck_yes"] = "Разрешить" if ru else "Allow"
+    t["ck_no"] = "Отказаться" if ru else "Decline"
+    t["ck_settings"] = "Настройки cookies" if ru else "Cookie settings"
     t["foot_note"] = ("Цифры взяты из рабочих отчётов и CRM. Выручка указана атрибутированная."
                       if ru else "Figures come from work reports and CRM data. Revenue is attributed revenue.")
     return t
@@ -625,22 +632,28 @@ def case_top(x):
 
 
 def metrika(lang):
-    """Standard Yandex Metrica tag; only rendered once METRIKA_ID is filled in."""
+    """Yandex Metrica tag wrapped in a loader. It runs only after the visitor allows cookies
+    (see the consent banner in app.js). Nothing is rendered while METRIKA_ID is empty."""
     if not METRIKA_ID:
         return ""
     return f'''<script>
+window.__loadMetrika=function(){{
 (function(m,e,t,r,i,k,a){{m[i]=m[i]||function(){{(m[i].a=m[i].a||[]).push(arguments)}};
 m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){{if(document.scripts[j].src===r){{return;}}}}
 k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}})
 (window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
 ym({METRIKA_ID},"init",{{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true,params:{{lang:"{lang}"}}}});
+}};
 </script>'''
 
 
-def metrika_noscript():
+def consent_banner(t):
     if not METRIKA_ID:
         return ""
-    return f'<noscript><div><img src="https://mc.yandex.ru/watch/{METRIKA_ID}" style="position:absolute;left:-9999px" alt=""></div></noscript>'
+    return (f'<div class="consent" id="consent" role="region" aria-label="{e(t["ck_label"])}" hidden>'
+            f'<p>{e(t["ck_text"])}</p><div class="consent-actions">'
+            f'<button type="button" class="btn btn-solid" data-consent="yes">{e(t["ck_yes"])}</button>'
+            f'<button type="button" class="btn btn-line" data-consent="no">{e(t["ck_no"])}</button></div></div>')
 
 
 # ---------------------------------------------------------------- sections
@@ -835,7 +848,6 @@ def render(lang):
 {metrika(lang)}
 </head>
 <body{f' data-ym="{METRIKA_ID}"' if METRIKA_ID else ""}>
-{metrika_noscript()}
 <a class="skip" href="#main">{e(t["skip"])}</a>
 <header class="topbar"><div class="wrap">
   <a class="brand" href="#top">{e(t["name"])}</a>
@@ -915,8 +927,9 @@ def render(lang):
 <footer class="footer"><div class="wrap">
   <p>© 2026 {e(t["name"])}</p>
   <p>{e(t["foot_note"])}</p>
-  <p><a href="{lhref}" hreflang="{"en" if ru else "ru"}" data-goal="lang_switch">{e(ltitle)}</a></p>
+  <p><a href="{lhref}" hreflang="{"en" if ru else "ru"}" data-goal="lang_switch">{e(ltitle)}</a>{f' <button type="button" class="linkbtn" data-consent-open hidden>{e(t["ck_settings"])}</button>' if METRIKA_ID else ""}</p>
 </div></footer>
+{consent_banner(t)}
 <script src="{P}assets/app.js" defer></script>
 </body>
 </html>

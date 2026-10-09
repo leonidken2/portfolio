@@ -85,12 +85,49 @@
   window.addEventListener("scroll", hide, { passive: true });
 })();
 
-// Yandex Metrica goals: any element with data-goal reports a click (only when a counter is set)
+// Cookie consent: Yandex Metrica loads only after "Allow". The choice is remembered on this device.
 (function () {
   var id = document.body.getAttribute("data-ym");
-  if (!id) return;
+  var banner = document.getElementById("consent");
+  if (!id || !banner) return;
+  var KEY = "cookie-consent";
+  var opener = document.querySelector("[data-consent-open]");
+
+  function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function save(v) { try { localStorage.setItem(KEY, v); } catch (e) { /* private mode: choice lasts this visit */ } }
+  function start() {
+    window["disableYaCounter" + id] = false;
+    if (typeof window.__loadMetrika === "function") window.__loadMetrika();
+  }
+  function stop() { window["disableYaCounter" + id] = true; }
+  function show() { banner.hidden = false; if (opener) opener.hidden = true; }
+  function hide() { banner.hidden = true; if (opener) opener.hidden = false; }
+
+  var choice = read();
+  if (choice === "yes") { start(); hide(); }
+  else if (choice === "no") { hide(); }
+  else { show(); }
+
+  banner.addEventListener("click", function (ev) {
+    var btn = ev.target.closest("[data-consent]");
+    if (!btn) return;
+    var v = btn.getAttribute("data-consent");
+    save(v);
+    if (v === "yes") start(); else stop();
+    hide();
+    if (opener) opener.focus();
+  });
+  if (opener) opener.addEventListener("click", function () {
+    show();
+    var first = banner.querySelector("button");
+    if (first) first.focus();
+  });
+
+  // Goals: any element with data-goal reports a click, but only once Metrica is running
   document.addEventListener("click", function (ev) {
     var el = ev.target.closest("[data-goal]");
-    if (el && typeof window.ym === "function") window.ym(Number(id), "reachGoal", el.getAttribute("data-goal"));
+    if (el && typeof window.ym === "function" && read() !== "no") {
+      window.ym(Number(id), "reachGoal", el.getAttribute("data-goal"));
+    }
   });
 })();

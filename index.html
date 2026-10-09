@@ -18,15 +18,16 @@
 <link rel="stylesheet" href="assets/style.css">
 <script>document.documentElement.className+=" js"</script>
 <script>
+window.__loadMetrika=function(){
 (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
 m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}
 k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
 (window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
 ym(113589015,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true,params:{lang:"ru"}});
+};
 </script>
 </head>
 <body data-ym="113589015">
-<noscript><div><img src="https://mc.yandex.ru/watch/113589015" style="position:absolute;left:-9999px" alt=""></div></noscript>
 <a class="skip" href="#main">К содержанию</a>
 <header class="topbar"><div class="wrap">
   <a class="brand" href="#top">Леонид Кривошеин</a>
@@ -183,8 +184,9 @@ ym(113589015,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webv
 <footer class="footer"><div class="wrap">
   <p>© 2026 Леонид Кривошеин</p>
   <p>Цифры взяты из рабочих отчётов и CRM. Выручка указана атрибутированная.</p>
-  <p><a href="en/" hreflang="en" data-goal="lang_switch">English version</a></p>
+  <p><a href="en/" hreflang="en" data-goal="lang_switch">English version</a> <button type="button" class="linkbtn" data-consent-open hidden>Настройки cookies</button></p>
 </div></footer>
+<div class="consent" id="consent" role="region" aria-label="Cookies" hidden><p>Сайт использует Яндекс Метрику и cookies, чтобы я видел, какие кейсы читают. Без вашего согласия статистика не собирается.</p><div class="consent-actions"><button type="button" class="btn btn-solid" data-consent="yes">Разрешить</button><button type="button" class="btn btn-line" data-consent="no">Отказаться</button></div></div>
 <script src="assets/app.js" defer></script>
 </body>
 </html>
