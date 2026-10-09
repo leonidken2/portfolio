@@ -83,6 +83,8 @@ def e(s):
 # ---------------------------------------------------------------- icons
 ICON = {
     "mail": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>',
+    "tg": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11l6 2.5M21 4l-3.5 16-8.5-6.5M21 4 9 13.5V19l3-3.2"/></svg>',
+    "ig": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>',
     "ext": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
     "down": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 4v16M5 13l7 7 7-7"/></svg>',
     "dash": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M8 21v-8M13 21v-5M18 21V12"/></svg>',
@@ -139,6 +141,7 @@ def texts(lang):
                  "I start with customer research and finish with revenue you can count. Right now I'm taking a cancer-diagnostics medtech product to market; before that I spent two years building patient acquisition for a dental clinic in Batumi.")
     t["cta_cases"] = "Смотреть кейсы" if ru else "See the cases"
     t["cta_mail"] = "Написать на почту" if ru else "Email me"
+    t["cta_tg"] = "Написать в Telegram" if ru else "Message on Telegram"
     t["photo_alt"] = "Леонид Кривошеин" if ru else "Leonid Krivoshein"
 
     t["roas_h"] = ("Каждый лари в Google Ads вернул 7,9 лари выручки" if ru
@@ -517,10 +520,14 @@ def texts(lang):
                 "Open to roles and projects in product marketing, growth and GTM: HealthTech, healthcare, B2B. Working remotely from Georgia.")
     t["c_mail"] = "kriwoshein.leonid248@gmail.com"
     t["c_li"] = "linkedin.com/in/leonid-krivoshein"
+    t["c_tg"] = "leokrivoshein"
+    t["c_ig"] = "leo_marketolog"
     t["c_labels"] = ("Почта", "LinkedIn", "Где") if ru else ("Email", "LinkedIn", "Location")
+    t["c_labels2"] = ("Telegram", "Instagram")
     t["c_where"] = "Грузия, удалённо" if ru else "Georgia, remote"
     t["c_btn_mail"] = "Написать письмо" if ru else "Write an email"
     t["c_btn_li"] = "Открыть LinkedIn" if ru else "Open LinkedIn"
+    t["c_btn_tg"] = "Написать в Telegram" if ru else "Telegram"
     t["ck_label"] = "Cookies"
     t["ck_text"] = ("Сайт использует Яндекс Метрику и cookies, чтобы я видел, какие кейсы читают. Без вашего согласия статистика не собирается."
                     if ru else
@@ -819,6 +826,16 @@ def render(lang):
         for i, (h, p, pr) in enumerate(t["steps"], 1))
     tools = "".join(f"<li>{e(x)}</li>" for x in t["tools"])
     l1, l2, l3 = t["c_labels"]
+    tg_url = f"https://t.me/{t['c_tg']}"
+    btn_tg = lambda cls, label: f'<a class="btn {cls}" href="{tg_url}" target="_blank" rel="noopener" data-goal="telegram">{ICON["tg"]}{e(label)}</a>'
+    btn_mail = lambda cls, label: f'<a class="btn {cls}" href="mailto:{t["c_mail"]}" data-goal="email">{ICON["mail"]}{e(label)}</a>'
+    btn_li = lambda cls: f'<a class="btn {cls}" href="https://{t["c_li"]}/" target="_blank" rel="noopener" data-goal="linkedin">{ICON["ext"]}{e(t["c_btn_li"])}</a>'
+    if ru:
+        hero_contact = btn_tg("btn-line", t["cta_tg"])
+        contact_btns = btn_tg("btn-solid", t["c_btn_tg"]) + btn_mail("btn-line", t["c_btn_mail"]) + btn_li("btn-line")
+    else:
+        hero_contact = btn_mail("btn-line", t["cta_mail"])
+        contact_btns = btn_mail("btn-solid", t["c_btn_mail"]) + btn_li("btn-line") + btn_tg("btn-line", t["c_btn_tg"])
 
     site = SITE_URL.rstrip("/")
     abs_url = (site + "/" + ("" if ru else "en/")) if site else ""
@@ -864,7 +881,7 @@ def render(lang):
       <p class="lead">{e(t["lead"])}</p>
       <div class="actions">
         <a class="btn btn-solid" href="#cases">{ICON["down"]}{e(t["cta_cases"])}</a>
-        <a class="btn btn-line" href="mailto:{t["c_mail"]}" data-goal="email">{ICON["mail"]}{e(t["cta_mail"])}</a>
+        {hero_contact}
       </div>
     </div>
     <figure class="portrait"><img src="{P}assets/leonid.jpg" width="600" height="600" alt="{e(t["photo_alt"])}"></figure>
@@ -912,13 +929,14 @@ def render(lang):
     <h2>{e(t["c_h"])}</h2>
     <p>{e(t["c_p"])}</p>
     <div class="actions">
-      <a class="btn btn-solid" href="mailto:{t["c_mail"]}" data-goal="email">{ICON["mail"]}{e(t["c_btn_mail"])}</a>
-      <a class="btn btn-line" href="https://{t["c_li"]}/" target="_blank" rel="noopener" data-goal="linkedin">{ICON["ext"]}{e(t["c_btn_li"])}</a>
+      {contact_btns}
     </div>
   </div>
   <dl>
     <dt>{e(l1)}</dt><dd><a href="mailto:{t["c_mail"]}" data-goal="email">{e(t["c_mail"])}</a></dd>
     <dt>{e(l2)}</dt><dd><a href="https://{t["c_li"]}/" target="_blank" rel="noopener" data-goal="linkedin">{e(t["c_li"])}</a></dd>
+    <dt>{e(t["c_labels2"][0])}</dt><dd><a href="https://t.me/{t["c_tg"]}" target="_blank" rel="noopener" data-goal="telegram">@{e(t["c_tg"])}</a></dd>
+    <dt>{e(t["c_labels2"][1])}</dt><dd><a href="https://www.instagram.com/{t["c_ig"]}/" target="_blank" rel="noopener" data-goal="instagram">@{e(t["c_ig"])}</a></dd>
     <dt>{e(l3)}</dt><dd>{e(t["c_where"])}</dd>
   </dl>
 </div></section>
