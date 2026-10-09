@@ -9,7 +9,7 @@ Edit texts in T["ru"] / T["en"], then run:  python3 build.py
 from html import escape
 from pathlib import Path
 
-METRIKA_ID = ""  # Yandex Metrica counter number, e.g. "98765432"; empty = no analytics
+METRIKA_ID = "113589015"  # Yandex Metrica counter number, e.g. "98765432"; empty = no analytics
 SITE_URL = "https://leonidken2.github.io/portfolio"  # e.g. "https://username.github.io/portfolio" — used for og:image / hreflang
 ROOT = Path(__file__).parent
 
