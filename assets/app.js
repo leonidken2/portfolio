@@ -84,3 +84,13 @@
   });
   window.addEventListener("scroll", hide, { passive: true });
 })();
+
+// Yandex Metrica goals: any element with data-goal reports a click (only when a counter is set)
+(function () {
+  var id = document.body.getAttribute("data-ym");
+  if (!id) return;
+  document.addEventListener("click", function (ev) {
+    var el = ev.target.closest("[data-goal]");
+    if (el && typeof window.ym === "function") window.ym(Number(id), "reachGoal", el.getAttribute("data-goal"));
+  });
+})();

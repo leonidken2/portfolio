@@ -9,6 +9,7 @@ Edit texts in T["ru"] / T["en"], then run:  python3 build.py
 from html import escape
 from pathlib import Path
 
+METRIKA_ID = ""  # Yandex Metrica counter number, e.g. "98765432"; empty = no analytics
 SITE_URL = "https://leonidken2.github.io/portfolio"  # e.g. "https://username.github.io/portfolio" — used for og:image / hreflang
 ROOT = Path(__file__).parent
 
@@ -602,7 +603,7 @@ def table(cap, cols, rows, num_cols=()):
 
 
 def tbl_toggle(tid, t):
-    return (f'<button class="tbl-toggle" type="button" aria-expanded="false" aria-controls="{tid}" '
+    return (f'<button class="tbl-toggle" type="button" data-goal="table_open" aria-expanded="false" aria-controls="{tid}" '
             f'data-show="{e(t["tbl_show"])}" data-hide="{e(t["tbl_hide"])}">{ICON["table"]}<span>{e(t["tbl_show"])}</span></button>')
 
 
@@ -621,6 +622,25 @@ def case_top(x):
     <ul class="did">{did}</ul>
   </div>
 </div>'''
+
+
+def metrika(lang):
+    """Standard Yandex Metrica tag; only rendered once METRIKA_ID is filled in."""
+    if not METRIKA_ID:
+        return ""
+    return f'''<script>
+(function(m,e,t,r,i,k,a){{m[i]=m[i]||function(){{(m[i].a=m[i].a||[]).push(arguments)}};
+m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){{if(document.scripts[j].src===r){{return;}}}}
+k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}})
+(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
+ym({METRIKA_ID},"init",{{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true,params:{{lang:"{lang}"}}}});
+</script>'''
+
+
+def metrika_noscript():
+    if not METRIKA_ID:
+        return ""
+    return f'<noscript><div><img src="https://mc.yandex.ru/watch/{METRIKA_ID}" style="position:absolute;left:-9999px" alt=""></div></noscript>'
 
 
 # ---------------------------------------------------------------- sections
@@ -689,7 +709,7 @@ def render(lang):
 
     # ---- Dental dashboard
     seg = "".join(
-        f'<button type="button" data-view="{k}" aria-pressed="{"true" if k == "all" else "false"}">'
+        f'<button type="button" data-goal="channel_filter" data-view="{k}" aria-pressed="{"true" if k == "all" else "false"}">'
         f'{f"<i style=\"background:{col}\"></i>" if col else ""}{e(lab)}</button>'
         for k, lab, col in d["seg"])
     seg_html = f'<div class="seg" role="group" aria-label="{e(d["seg_label"])}">{seg}</div>'
@@ -812,13 +832,15 @@ def render(lang):
 <link rel="preload" href="{P}assets/fonts/geologica-{"cyrillic" if ru else "latin"}-full-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{P}assets/style.css">
 <script>document.documentElement.className+=" js"</script>
+{metrika(lang)}
 </head>
-<body>
+<body{f' data-ym="{METRIKA_ID}"' if METRIKA_ID else ""}>
+{metrika_noscript()}
 <a class="skip" href="#main">{e(t["skip"])}</a>
 <header class="topbar"><div class="wrap">
   <a class="brand" href="#top">{e(t["name"])}</a>
   <nav class="nav" aria-label="{e("Разделы" if ru else "Sections")}">{nav}</nav>
-  <a class="lang" href="{lhref}" hreflang="{"en" if ru else "ru"}" title="{e(ltitle)}">{ltext}</a>
+  <a class="lang" href="{lhref}" hreflang="{"en" if ru else "ru"}" title="{e(ltitle)}" data-goal="lang_switch">{ltext}</a>
 </div></header>
 
 <main id="main">
@@ -830,7 +852,7 @@ def render(lang):
       <p class="lead">{e(t["lead"])}</p>
       <div class="actions">
         <a class="btn btn-solid" href="#cases">{ICON["down"]}{e(t["cta_cases"])}</a>
-        <a class="btn btn-line" href="mailto:{t["c_mail"]}">{ICON["mail"]}{e(t["cta_mail"])}</a>
+        <a class="btn btn-line" href="mailto:{t["c_mail"]}" data-goal="email">{ICON["mail"]}{e(t["cta_mail"])}</a>
       </div>
     </div>
     <figure class="portrait"><img src="{P}assets/leonid.jpg" width="600" height="600" alt="{e(t["photo_alt"])}"></figure>
@@ -878,13 +900,13 @@ def render(lang):
     <h2>{e(t["c_h"])}</h2>
     <p>{e(t["c_p"])}</p>
     <div class="actions">
-      <a class="btn btn-solid" href="mailto:{t["c_mail"]}">{ICON["mail"]}{e(t["c_btn_mail"])}</a>
-      <a class="btn btn-line" href="https://{t["c_li"]}/" target="_blank" rel="noopener">{ICON["ext"]}{e(t["c_btn_li"])}</a>
+      <a class="btn btn-solid" href="mailto:{t["c_mail"]}" data-goal="email">{ICON["mail"]}{e(t["c_btn_mail"])}</a>
+      <a class="btn btn-line" href="https://{t["c_li"]}/" target="_blank" rel="noopener" data-goal="linkedin">{ICON["ext"]}{e(t["c_btn_li"])}</a>
     </div>
   </div>
   <dl>
-    <dt>{e(l1)}</dt><dd><a href="mailto:{t["c_mail"]}">{e(t["c_mail"])}</a></dd>
-    <dt>{e(l2)}</dt><dd><a href="https://{t["c_li"]}/" target="_blank" rel="noopener">{e(t["c_li"])}</a></dd>
+    <dt>{e(l1)}</dt><dd><a href="mailto:{t["c_mail"]}" data-goal="email">{e(t["c_mail"])}</a></dd>
+    <dt>{e(l2)}</dt><dd><a href="https://{t["c_li"]}/" target="_blank" rel="noopener" data-goal="linkedin">{e(t["c_li"])}</a></dd>
     <dt>{e(l3)}</dt><dd>{e(t["c_where"])}</dd>
   </dl>
 </div></section>
@@ -893,7 +915,7 @@ def render(lang):
 <footer class="footer"><div class="wrap">
   <p>© 2026 {e(t["name"])}</p>
   <p>{e(t["foot_note"])}</p>
-  <p><a href="{lhref}" hreflang="{"en" if ru else "ru"}">{e(ltitle)}</a></p>
+  <p><a href="{lhref}" hreflang="{"en" if ru else "ru"}" data-goal="lang_switch">{e(ltitle)}</a></p>
 </div></footer>
 <script src="{P}assets/app.js" defer></script>
 </body>
