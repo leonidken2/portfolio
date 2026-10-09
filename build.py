@@ -534,6 +534,9 @@ def texts(lang):
     t["c_btn_li"] = "Открыть LinkedIn" if ru else "Open LinkedIn"
     t["c_btn_tg"] = "Написать в Telegram" if ru else "Telegram"
     t["c_btn_mail_short"] = "Почта" if ru else "Email"
+    t["cv_btn"] = "Резюме PDF" if ru else "Resume PDF"
+    t["cv_label"] = "Резюме" if ru else "Resume"
+    t["cv_links"] = (("на русском", "RU"), ("на английском", "EN")) if ru else (("English", "EN"), ("Russian", "RU"))
     t["ck_label"] = "Cookies"
     t["ck_text"] = ("Сайт использует Яндекс Метрику и cookies, чтобы я видел, какие кейсы читают. Без вашего согласия статистика не собирается."
                     if ru else
@@ -890,6 +893,7 @@ def render(lang):
       <div class="actions">
         <a class="btn btn-solid" href="#cases">{ICON["down"]}{e(t["cta_cases"])}</a>
         {hero_contact}
+        <a class="btn btn-line" href="{P}cv/Leonid_Krivoshein_CV_{lang.upper()}.pdf" download data-goal="cv_download">{ICON["down"]}{e(t["cv_btn"])}</a>
       </div>
     </div>
     <figure class="portrait"><img src="{P}assets/leonid.jpg" width="600" height="600" alt="{e(t["photo_alt"])}"></figure>
@@ -947,6 +951,7 @@ def render(lang):
     <div><dt>WhatsApp</dt><dd><a href="{wa_url}" target="_blank" rel="noopener" data-goal="whatsapp">{e(t["c_wa_show"])}</a></dd></div>
     <div><dt>{e(t["c_labels2"][1])}</dt><dd><a href="https://www.instagram.com/{t["c_ig"]}/" target="_blank" rel="noopener" data-goal="instagram">@{e(t["c_ig"])}</a></dd></div>
     <div><dt>YouTube</dt><dd><a href="https://www.youtube.com/@{t["c_yt"]}" target="_blank" rel="noopener" data-goal="youtube">@{e(t["c_yt"])}</a></dd></div>
+    <div class="full"><dt>{e(t["cv_label"])}</dt><dd>{" · ".join(f'<a href="{P}cv/Leonid_Krivoshein_CV_{code}.pdf" download data-goal="cv_download">PDF {e(lab)}</a>' for lab, code in t["cv_links"])}</dd></div>
     <div class="full"><dt>{e(l3)}</dt><dd>{e(t["c_where"])}</dd></div>
   </dl>
 </div></section>

@@ -28,4 +28,8 @@
 
 ## Яндекс Метрика и cookies
 
-Номер счётчика задаётся в `METRIKA_ID` в `build.py`. Метрика запускается только после того, как посетитель нажмёт «Разрешить» в баннере; выбор запоминается в браузере, изменить его можно по ссылке «Настройки cookies» внизу страницы. Клики по элементам с атрибутом `data-goal` отправляются в Метрику как цели (`email`, `linkedin`, `telegram`, `whatsapp`, `instagram`, `youtube`, `lang_switch`, `table_open`, `channel_filter`).
+Номер счётчика задаётся в `METRIKA_ID` в `build.py`. Метрика запускается только после того, как посетитель нажмёт «Разрешить» в баннере; выбор запоминается в браузере, изменить его можно по ссылке «Настройки cookies» внизу страницы. Клики по элементам с атрибутом `data-goal` отправляются в Метрику как цели (`email`, `linkedin`, `telegram`, `whatsapp`, `instagram`, `youtube`, `cv_download`, `lang_switch`, `table_open`, `channel_filter`).
+
+## Резюме в PDF
+
+`cv/Leonid_Krivoshein_CV_RU.pdf` и `cv/Leonid_Krivoshein_CV_EN.pdf` собираются из `cv-src/build_cv.py` и берут цифры из `build.py`, поэтому резюме и сайт всегда совпадают. После правок запустите `python3 build.py` и `python3 cv-src/build_cv.py`.
