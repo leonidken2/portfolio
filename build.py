@@ -9,7 +9,7 @@ Edit texts in T["ru"] / T["en"], then run:  python3 build.py
 from html import escape
 from pathlib import Path
 
-SITE_URL = ""  # e.g. "https://username.github.io/portfolio" — used for og:image / hreflang
+SITE_URL = "https://leonidken2.github.io/portfolio"  # e.g. "https://username.github.io/portfolio" — used for og:image / hreflang
 ROOT = Path(__file__).parent
 
 # ---------------------------------------------------------------- data
