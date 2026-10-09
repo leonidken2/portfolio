@@ -85,6 +85,8 @@ ICON = {
     "mail": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>',
     "tg": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11l6 2.5M21 4l-3.5 16-8.5-6.5M21 4 9 13.5V19l3-3.2"/></svg>',
     "ig": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>',
+    "wa": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 18.8z"/><path d="M9.2 8.6c0 3.3 2.9 6.2 6.2 6.2l.9-1.6-2-1-1 .9a4.5 4.5 0 0 1-2.4-2.4l.9-1-1-2z" stroke-width="1.4"/></svg>',
+    "yt": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor" stroke="none"/></svg>',
     "ext": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
     "down": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 4v16M5 13l7 7 7-7"/></svg>',
     "dash": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M8 21v-8M13 21v-5M18 21V12"/></svg>',
@@ -523,11 +525,15 @@ def texts(lang):
     t["c_tg"] = "leokrivoshein"
     t["c_ig"] = "leo_marketolog"
     t["c_labels"] = ("Почта", "LinkedIn", "Где") if ru else ("Email", "LinkedIn", "Location")
+    t["c_wa"] = "99574018032"
+    t["c_wa_show"] = "+995 574 01 80 32"
+    t["c_yt"] = "marketingleo"
     t["c_labels2"] = ("Telegram", "Instagram")
     t["c_where"] = "Грузия, удалённо" if ru else "Georgia, remote"
     t["c_btn_mail"] = "Написать письмо" if ru else "Write an email"
     t["c_btn_li"] = "Открыть LinkedIn" if ru else "Open LinkedIn"
     t["c_btn_tg"] = "Написать в Telegram" if ru else "Telegram"
+    t["c_btn_mail_short"] = "Почта" if ru else "Email"
     t["ck_label"] = "Cookies"
     t["ck_text"] = ("Сайт использует Яндекс Метрику и cookies, чтобы я видел, какие кейсы читают. Без вашего согласия статистика не собирается."
                     if ru else
@@ -829,13 +835,15 @@ def render(lang):
     tg_url = f"https://t.me/{t['c_tg']}"
     btn_tg = lambda cls, label: f'<a class="btn {cls}" href="{tg_url}" target="_blank" rel="noopener" data-goal="telegram">{ICON["tg"]}{e(label)}</a>'
     btn_mail = lambda cls, label: f'<a class="btn {cls}" href="mailto:{t["c_mail"]}" data-goal="email">{ICON["mail"]}{e(label)}</a>'
-    btn_li = lambda cls: f'<a class="btn {cls}" href="https://{t["c_li"]}/" target="_blank" rel="noopener" data-goal="linkedin">{ICON["ext"]}{e(t["c_btn_li"])}</a>'
+    btn_li = lambda cls, label="LinkedIn": f'<a class="btn {cls}" href="https://{t["c_li"]}/" target="_blank" rel="noopener" data-goal="linkedin">{ICON["ext"]}{e(label)}</a>'
+    wa_url = f"https://wa.me/{t['c_wa']}"
+    btn_wa = lambda cls: f'<a class="btn {cls}" href="{wa_url}" target="_blank" rel="noopener" data-goal="whatsapp">{ICON["wa"]}WhatsApp</a>'
     if ru:
         hero_contact = btn_tg("btn-line", t["cta_tg"])
-        contact_btns = btn_tg("btn-solid", t["c_btn_tg"]) + btn_mail("btn-line", t["c_btn_mail"]) + btn_li("btn-line")
+        contact_btns = btn_tg("btn-solid", t["c_btn_tg"]) + btn_wa("btn-line") + btn_mail("btn-line", t["c_btn_mail_short"]) + btn_li("btn-line")
     else:
         hero_contact = btn_mail("btn-line", t["cta_mail"])
-        contact_btns = btn_mail("btn-solid", t["c_btn_mail"]) + btn_li("btn-line") + btn_tg("btn-line", t["c_btn_tg"])
+        contact_btns = btn_mail("btn-solid", t["c_btn_mail"]) + btn_li("btn-line") + btn_wa("btn-line") + btn_tg("btn-line", "Telegram")
 
     site = SITE_URL.rstrip("/")
     abs_url = (site + "/" + ("" if ru else "en/")) if site else ""
@@ -933,11 +941,13 @@ def render(lang):
     </div>
   </div>
   <dl>
-    <dt>{e(l1)}</dt><dd><a href="mailto:{t["c_mail"]}" data-goal="email">{e(t["c_mail"])}</a></dd>
-    <dt>{e(l2)}</dt><dd><a href="https://{t["c_li"]}/" target="_blank" rel="noopener" data-goal="linkedin">{e(t["c_li"])}</a></dd>
-    <dt>{e(t["c_labels2"][0])}</dt><dd><a href="https://t.me/{t["c_tg"]}" target="_blank" rel="noopener" data-goal="telegram">@{e(t["c_tg"])}</a></dd>
-    <dt>{e(t["c_labels2"][1])}</dt><dd><a href="https://www.instagram.com/{t["c_ig"]}/" target="_blank" rel="noopener" data-goal="instagram">@{e(t["c_ig"])}</a></dd>
-    <dt>{e(l3)}</dt><dd>{e(t["c_where"])}</dd>
+    <div class="full"><dt>{e(l1)}</dt><dd><a href="mailto:{t["c_mail"]}" data-goal="email">{e(t["c_mail"])}</a></dd></div>
+    <div class="full"><dt>{e(l2)}</dt><dd><a href="https://{t["c_li"]}/" target="_blank" rel="noopener" data-goal="linkedin">{e(t["c_li"])}</a></dd></div>
+    <div><dt>{e(t["c_labels2"][0])}</dt><dd><a href="https://t.me/{t["c_tg"]}" target="_blank" rel="noopener" data-goal="telegram">@{e(t["c_tg"])}</a></dd></div>
+    <div><dt>WhatsApp</dt><dd><a href="{wa_url}" target="_blank" rel="noopener" data-goal="whatsapp">{e(t["c_wa_show"])}</a></dd></div>
+    <div><dt>{e(t["c_labels2"][1])}</dt><dd><a href="https://www.instagram.com/{t["c_ig"]}/" target="_blank" rel="noopener" data-goal="instagram">@{e(t["c_ig"])}</a></dd></div>
+    <div><dt>YouTube</dt><dd><a href="https://www.youtube.com/@{t["c_yt"]}" target="_blank" rel="noopener" data-goal="youtube">@{e(t["c_yt"])}</a></dd></div>
+    <div class="full"><dt>{e(l3)}</dt><dd>{e(t["c_where"])}</dd></div>
   </dl>
 </div></section>
 </main>

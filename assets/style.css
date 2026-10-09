@@ -528,3 +528,9 @@ section[id] { scroll-margin-top: 64px; }
 .linkbtn { font: inherit; color: #fff; background: none; border: 0; padding: 0; margin-left: 16px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .linkbtn[hidden] { display: none; }
 @media print { .consent { display: none; } }
+
+.contact dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; }
+.contact dl > div { min-width: 0; }
+.contact dl > div.full { grid-column: 1 / -1; }
+.contact dd { overflow-wrap: anywhere; }
+@media (max-width: 560px) { .contact dl { grid-template-columns: 1fr; } }
