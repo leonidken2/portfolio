@@ -534,3 +534,28 @@ section[id] { scroll-margin-top: 64px; }
 .contact dl > div.full { grid-column: 1 / -1; }
 .contact dd { overflow-wrap: anywhere; }
 @media (max-width: 560px) { .contact dl { grid-template-columns: 1fr; } }
+
+/* ---------- Toolkit: working materials ---------- */
+.toolkit .dash { scroll-margin-top: 80px; }
+.toolkit .section-head { margin-bottom: 0; }
+a.tbl-toggle { text-decoration: none; }
+.tk-n { display: block; font-size: var(--step--1); font-weight: 620; color: var(--onco); font-variant-numeric: tabular-nums; }
+.tk-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.tk-grid li { border: 1px solid var(--line-soft); border-radius: var(--r-mark); padding: 12px 14px 14px; background: var(--paper); }
+.tk-grid h5 { margin: 6px 0 4px; font-size: var(--step-0); font-weight: 580; line-height: 1.25; }
+.tk-grid p { margin: 0; font-size: var(--step--1); color: var(--ink-2); line-height: 1.4; }
+.tk-learn li { font-size: var(--step-0); padding: 9px 0; }
+.tk-table { overflow-x: auto; }
+.tk-table .dtable caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 560px) { .tk-table .dtable { font-size: var(--step--1); } .tk-table .dtable th, .tk-table .dtable td { padding-right: 8px; } }
+.tk-table tbody tr:last-child th, .tk-table tbody tr:last-child td { font-weight: 620; color: var(--ink); border-bottom: 0; }
+.tk-note { font-size: var(--step-0); margin-top: 0; }
+.tk-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.tk-cards li { border: 1px solid var(--line-soft); border-radius: var(--r-mark); padding: 14px 16px; background: var(--paper); }
+.tk-cards h5 { margin: 0 0 6px; font-size: var(--step-0); font-weight: 580; }
+.tk-cards p { margin: 0; font-size: var(--step--1); color: var(--ink-2); line-height: 1.45; max-width: none; }
+.tk-plan { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.tk-plan li { border-left: 3px solid var(--onco); background: var(--paper); padding: 8px 12px; font-size: var(--step--1); line-height: 1.35; border-radius: 0 var(--r-mark) var(--r-mark) 0; }
+.tk-plan .tk-n { margin-bottom: 2px; }
+@media (max-width: 900px) { .tk-grid, .tk-plan { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .tk-grid, .tk-plan, .tk-cards { grid-template-columns: 1fr; } }

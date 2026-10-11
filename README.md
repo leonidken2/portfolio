@@ -28,7 +28,7 @@
 
 ## Яндекс Метрика и cookies
 
-Номер счётчика задаётся в `METRIKA_ID` в `build.py`. Метрика запускается только после того, как посетитель нажмёт «Разрешить» в баннере; выбор запоминается в браузере, изменить его можно по ссылке «Настройки cookies» внизу страницы. Клики по элементам с атрибутом `data-goal` отправляются в Метрику как цели (`email`, `linkedin`, `telegram`, `whatsapp`, `instagram`, `youtube`, `cv_download`, `lang_switch`, `table_open`, `channel_filter`).
+Номер счётчика задаётся в `METRIKA_ID` в `build.py`. Метрика запускается только после того, как посетитель нажмёт «Разрешить» в баннере; выбор запоминается в браузере, изменить его можно по ссылке «Настройки cookies» внизу страницы. Клики по элементам с атрибутом `data-goal` отправляются в Метрику как цели (`email`, `linkedin`, `telegram`, `whatsapp`, `instagram`, `youtube`, `cv_download`, `lang_switch`, `table_open`, `channel_filter`, `template_open`).
 
 ## Резюме в PDF
 

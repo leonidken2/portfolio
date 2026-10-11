@@ -131,7 +131,8 @@ def texts(lang):
                  "Marketing portfolio: GTM for the OncoDiag medtech product, dental patient acquisition at 7.9x ROAS, community growth from zero to 1,800 followers.")
     t["name"] = "Леонид Кривошеин" if ru else "Leonid Krivoshein"
     t["skip"] = "К содержанию" if ru else "Skip to content"
-    t["nav"] = [("#cases", "Кейсы" if ru else "Cases"), ("#experience", "Опыт" if ru else "Experience"),
+    t["nav"] = [("#cases", "Кейсы" if ru else "Cases"), ("#toolkit", "Материалы" if ru else "Materials"),
+                ("#experience", "Опыт" if ru else "Experience"),
                 ("#approach", "Подход" if ru else "Approach"), ("#contact", "Контакты" if ru else "Contact")]
     t["lang_link"] = ("en/", "EN", "English version") if ru else ("../", "RU", "Русская версия")
 
@@ -546,6 +547,256 @@ def texts(lang):
     t["ck_settings"] = "Настройки cookies" if ru else "Cookie settings"
     t["foot_note"] = ("Цифры взяты из рабочих отчётов и CRM. Выручка указана атрибутированная."
                       if ru else "Figures come from work reports and CRM data. Revenue is attributed revenue.")
+
+    # ---- Toolkit: working materials
+    k = {}
+    k["h"] = "Рабочие материалы" if ru else "Working materials"
+    k["p"] = ("Как выглядят стратегия, расчёт окупаемости, шаблон и процессы изнутри. Данные клиентов обезличены."
+              if ru else "What a strategy, a payback model, a template and team processes look like from the inside. Client data is anonymized.")
+
+    # A. Strategy for a doctor's personal brand
+    k["st_h"] = "Стратегия личного бренда врача-эндокринолога" if ru else "Personal brand strategy for an endocrinologist"
+    k["st_sub"] = "RS Agency, 2025–2026" if ru else "RS Agency, 2025–2026"
+    k["st_parts_h"] = "Из чего состоит стратегия" if ru else "What the strategy covers"
+    k["st_parts_sub"] = ("Цель — рост онлайн-консультаций, а не медийность ради медийности" if ru
+                         else "The goal is more online consultations, not visibility for its own sake")
+    k["st_parts"] = ([
+        ("Аудит площадок", "Instagram, сайт, отзывы, карточки на агрегаторах — по чек-листу из шести блоков"),
+        ("Аудитория", "Сегменты, кастдев, мотивы и барьеры пациентов"),
+        ("Рынок и конкуренты", "Объём рынка (TAM, SAM, SOM) и карта конкурентов"),
+        ("Позиционирование", "Большая идея и формула позиционирования"),
+        ("Контент-система", "Рубрики, банк сценариев, ритм сторис"),
+        ("Воронка", "Из Instagram в Telegram, бот и консультация"),
+        ("Продукты и бюджет", "Продуктовая линейка и бюджет на год по статьям"),
+        ("Дорожная карта", "План внедрения по месяцам"),
+    ] if ru else [
+        ("Channel audit", "Instagram, website, reviews, directory listings, checked against a six-part checklist"),
+        ("Audience", "Segments, customer interviews, patients' motives and barriers"),
+        ("Market and competitors", "Market size (TAM, SAM, SOM) and a competitor map"),
+        ("Positioning", "The big idea and the positioning statement"),
+        ("Content system", "Content pillars, a script bank, a stories rhythm"),
+        ("Funnel", "From Instagram to Telegram, a bot and a consultation"),
+        ("Products and budget", "Product line and a yearly budget by line item"),
+        ("Roadmap", "A month-by-month rollout plan"),
+    ])
+    k["st_fun_h"] = "Воронка: от контента до консультации" if ru else "Funnel: from content to a consultation"
+    k["st_fun_sub"] = ("Каждый шаг переводит человека с чужой площадки в свой канал" if ru
+                       else "Each step moves people from a rented platform into an owned channel")
+    k["st_fun"] = ([
+        ("Reels и посты", "Охват и первое знакомство с врачом"),
+        ("Сторис и актуальное", "Доверие: практика, ответы на вопросы, отзывы"),
+        ("Telegram-канал", "Свой канал, не зависит от алгоритмов"),
+        ("Бот по кодовому слову", "Гайд в обмен на подписку, короткий прогрев"),
+        ("Онлайн-консультация", "Запись и оплата"),
+    ] if ru else [
+        ("Reels and posts", "Reach and a first look at the doctor"),
+        ("Stories and highlights", "Trust: practice, answers, reviews"),
+        ("Telegram channel", "An owned channel, no algorithm in the way"),
+        ("Bot via a code word", "A guide for a subscription, a short warm-up"),
+        ("Online consultation", "Booking and payment"),
+    ])
+    k["st_audit_h"] = "Чек-лист аудита площадки" if ru else "Channel audit checklist"
+    k["st_audit_sub"] = "Шесть вопросов к каждому каналу" if ru else "Six questions for every channel"
+    k["st_audit"] = ([
+        "Цель канала и KPI: привлечение, удержание, узнаваемость или чек",
+        "Метрики: трафик, конверсия в заявку, средний чек, окупаемость",
+        "Вовлечённость: охват, реакции, диалоги, отзывы",
+        "Позиционирование: понятно ли по одному посту, чем врач отличается",
+        "Система: рубрики, сценарии, перелив аудитории между каналами",
+        "Креатив: эмоции, разнообразие форматов",
+    ] if ru else [
+        "Channel goal and KPI: acquisition, retention, awareness or order value",
+        "Metrics: traffic, conversion to a request, average order, payback",
+        "Engagement: reach, reactions, conversations, reviews",
+        "Positioning: can one post tell you how this doctor is different",
+        "System: content pillars, scripts, audience flow between channels",
+        "Creative: emotion, variety of formats",
+    ])
+    k["st_budget_h"] = "Бюджет на год: статьи" if ru else "Yearly budget: line items"
+    k["st_budget_sub"] = "Разовые, ежемесячные и пиковые расходы" if ru else "One-off, monthly and peak costs"
+    k["st_budget"] = ([
+        "Брендинг всех площадок: YouTube, сайт, Telegram, Instagram",
+        "Контент и продакшн: интервью, соло-видео, нарезка шортс",
+        "Реклама: Яндекс Директ, таргет ВК, Google Ads",
+        "Чат-бот и автоворонки: разработка, гайды, подписка на конструктор",
+        "Офлайн-практикумы: площадка, фото и видео",
+        "Техника, сервисы и резерв",
+    ] if ru else [
+        "Branding for every channel: YouTube, website, Telegram, Instagram",
+        "Content and production: interviews, solo videos, shorts",
+        "Ads: Yandex Direct, VK targeting, Google Ads",
+        "Chatbot and automated funnels: build, guides, builder subscription",
+        "Offline workshops: venue, photo and video",
+        "Equipment, tools and a reserve",
+    ])
+    k["st_learn_h"] = "Что я вынес из защиты стратегии" if ru else "What I took away from presenting it"
+    k["st_learn"] = ([
+        "Стратегия должна быть инструментом запуска, а не исследовательским досье: диагноз → три приоритета → план на 30 дней.",
+        "Сначала базовый ритм: профиль, закрепы, один Reels в неделю. Telegram и бот — следующим этапом, когда ритм устоялся.",
+        "Продуктовая линейка строится под реальную модель работы врача, а не под шаблон.",
+        "После защиты — короткий follow-up: что делаем первым и что пока не делаем.",
+    ] if ru else [
+        "A strategy has to be a launch tool, not a research dossier: diagnosis → three priorities → a 30-day plan.",
+        "Basic rhythm first: profile, pinned posts, one Reel a week. Telegram and the bot come next, once the rhythm holds.",
+        "The product line is built around how the doctor actually works, not around a template.",
+        "After the presentation, a short follow-up: what we do first and what we leave for later.",
+    ])
+
+    # B. Marketing payback model
+    k["pb_h"] = "Окупаемость маркетинга для врача" if ru else "Marketing payback model for a doctor"
+    k["pb_sub"] = "Модель на 3 месяца, пример расчёта" if ru else "A 3-month model, worked example"
+    k["pb_kpis"] = [
+        ("3 месяца" if ru else "3 months", "горизонт модели" if ru else "model horizon"),
+        ("3", "сценария: 100%, 50% и 20% плана" if ru else "scenarios: 100%, 50% and 20% of plan"),
+        ("3-й месяц" if ru else "Month 3", "выход в плюс в полном сценарии" if ru else "break-even in the full scenario"),
+    ]
+    k["pb_tbl_h"] = "Полный сценарий: от касания до прибыли" if ru else "Full scenario: from first touch to profit"
+    k["pb_tbl_sub"] = ("Консультации врача, средний чек 3 500 ₽, маркетолог с командой на аутсорсе" if ru
+                       else "Doctor's consultations, average ticket ₽3,500, an outsourced marketer with a team")
+    k["pb_cols"] = ["Этап", "Месяц 1", "Месяц 2", "Месяц 3"] if ru else ["Stage", "Month 1", "Month 2", "Month 3"]
+    tk_ = ", тыс. ₽" if ru else ", ₽k"
+    k["pb_rows"] = [
+        ("Касания: люди в воронке" if ru else "Touches: people in the funnel", "30", "50", "100"),
+        ("Дошли до диалога, 50%" if ru else "Reached a conversation, 50%", "15", "25", "50"),
+        ("Оставили заявку, 67%" if ru else "Made a request, 67%", "10", "17", "34"),
+        ("Оплатили, 100%" if ru else "Paid, 100%", "10", "17", "34"),
+        (("Выручка" if ru else "Revenue") + tk_, "35", "59", "117"),
+        (("Расходы: команда и налог 6%" if ru else "Costs: team and 6% tax") + tk_, "82", "84", "87"),
+        (("Чистая прибыль" if ru else "Net profit") + tk_, "−47", "−25", "+30"),
+    ]
+    k["pb_how_h"] = "Как устроена модель" if ru else "How the model works"
+    k["pb_how"] = ([
+        "Каждый этап воронки — отдельная строка с конверсией: видно, где теряются люди",
+        "Расходы разложены: команда, реклама, сервисы, налог самозанятого",
+        "Три сценария показывают врачу диапазон результата до старта",
+        "Прибыль распределяется: зарплата от 50%, подушка от 10%, рост от 20%",
+    ] if ru else [
+        "Each funnel stage is its own row with a conversion rate, so you see where people drop off",
+        "Costs are itemized: team, ads, tools, self-employed tax",
+        "Three scenarios show the doctor the range of outcomes before the start",
+        "Profit gets split: pay 50%+, safety cushion 10%+, growth 20%+",
+    ])
+    k["pb_note_h"] = "Что видно из расчёта" if ru else "What the numbers say"
+    k["pb_note"] = ("С командой маркетинга первые два месяца уходят в минус — это вложение в поток пациентов. "
+                    "В плюс модель выходит на третьем месяце, когда касаний становится 100 в месяц. "
+                    "Врач видит это заранее, а не узнаёт по факту."
+                    if ru else
+                    "With a marketing team, the first two months run at a loss: that's the investment in patient flow. "
+                    "The model turns positive in month three, once touches reach 100 a month. "
+                    "The doctor sees this up front instead of finding out later.")
+
+    # C. Kotler-based strategy template
+    k["kt_h"] = "Шаблон маркетинговой стратегии по Котлеру" if ru else "Marketing strategy template based on Kotler"
+    k["kt_sub"] = "Мой рабочий шаблон в Google Таблицах" if ru else "My working template in Google Sheets"
+    k["kt_steps_h"] = "Восемь листов — восемь шагов" if ru else "Eight sheets, eight steps"
+    k["kt_steps_sub"] = ("Бриф → исследование → сегментация → конкуренты → позиционирование → 7P, план и KPI" if ru
+                         else "Brief → research → segmentation → competitors → positioning → 7P, plan and KPIs")
+    k["kt_steps"] = ([
+        ("Бриф и гипотезы роста", "Цель, ресурсы, ограничения, модель роста"),
+        ("Наблюдение", "Desk research, SWOT, микро- и макросреда"),
+        ("Эксперимент", "Тесты, сроки, бюджет, критерии успеха"),
+        ("Опрос и CustDev", "Анкеты, гайд интервью, анализ ответов"),
+        ("Сегментирование", "Поведение, мотивы, ядро аудитории"),
+        ("Конкуренты и потребности", "Карта рынка и альтернатив"),
+        ("Позиционирование", "Инсайты → платформа, сообщение, доказательства"),
+        ("7P, план и KPI", "Каналы, контент, бюджет, план на месяц"),
+    ] if ru else [
+        ("Brief and growth hypotheses", "Goal, resources, constraints, growth model"),
+        ("Observation", "Desk research, SWOT, micro and macro environment"),
+        ("Experiment", "Tests, timing, budget, success criteria"),
+        ("Survey and customer interviews", "Questionnaires, interview guide, analysis"),
+        ("Segmentation", "Behavior, motives, the core audience"),
+        ("Competitors and needs", "A map of the market and the alternatives"),
+        ("Positioning", "Insights → platform, message, reasons to believe"),
+        ("7P, plan and KPIs", "Channels, content, budget, a monthly plan"),
+    ])
+    k["kt_rules_h"] = "Два правила шаблона" if ru else "Two rules of the template"
+    k["kt_rules"] = ([
+        "Не переходить к каналам и контенту, пока не зафиксированы цель и логика роста.",
+        "Позиционирование — только после инсайтов из исследований, а не на ощущениях.",
+    ] if ru else [
+        "No channels or content until the goal and the growth logic are fixed.",
+        "Positioning comes only after research insights, not from gut feeling.",
+    ])
+    k["kt_link"] = "https://docs.google.com/spreadsheets/d/1yJVHpT7fT-HukwT6YYUo5ko12PZ7YXVCxUG9T5wcmA8/edit?usp=sharing"
+    k["kt_link_t"] = "Открыть шаблон" if ru else "Open the template (in Russian)"
+
+    # D. Contractors and processes
+    k["tm_h"] = "Подрядчики и процессы" if ru else "Contractors and processes"
+    k["tm_sub"] = "Найм, ТЗ и план работ на проекте OncoDiag" if ru else "Hiring, briefs and work plans on the OncoDiag project"
+    k["tm_kpis"] = [
+        ("100+", "откликов на вакансию копирайтера" if ru else "applications for the copywriter role"),
+        ("31", "кандидат получил тестовое" if ru else "candidates got a test task"),
+        ("19", "сдали тестовое" if ru else "turned the test in"),
+        ("2", "автора отобрали" if ru else "writers selected"),
+    ]
+    k["tm_hire_h"] = "Как я оцениваю тестовое" if ru else "How I grade a test task"
+    k["tm_hire_sub"] = "Одинаковые критерии для всех кандидатов" if ru else "The same criteria for every candidate"
+    k["tm_hire"] = ([
+        "Понял ли автор продукт, нет ли фактических ошибок",
+        "Структура и заголовок: суть считывается за несколько секунд",
+        "Главред: чистота и читаемость текста",
+        "Водность и заспамленность",
+        "Проверка на ИИ-генерацию",
+        "Сроки сдачи и опыт в медицинской нише",
+    ] if ru else [
+        "Did the writer get the product, any factual errors",
+        "Structure and headline: the point lands in seconds",
+        "Readability and clarity scores (Glavred)",
+        "Filler and keyword stuffing",
+        "AI-generation check",
+        "Deadline and experience in healthcare",
+    ])
+    k["tm_brief_h"] = "Как я пишу ТЗ" if ru else "How I write a brief"
+    k["tm_brief_sub"] = "Подрядчик не должен переспрашивать" if ru else "The contractor shouldn't have to ask"
+    k["tm_brief"] = ([
+        "Контекст: что за продукт и зачем задача",
+        "Аудитория и фокус для каждой",
+        "Главная задача одним предложением",
+        "Что сдать: формат, объём, структура",
+        "Ограничения: например, не менять смысл медицинских формулировок",
+        "Материалы и вопросы на согласование",
+    ] if ru else [
+        "Context: what the product is and why the task matters",
+        "The audience and the focus for each",
+        "The main task in one sentence",
+        "What to deliver: format, length, structure",
+        "Constraints, e.g. don't change the meaning of medical wording",
+        "Source materials and questions to clear",
+    ])
+    k["tm_cards_h"] = "Два ТЗ из практики" if ru else "Two briefs from practice"
+    k["tm_cards"] = ([
+        ("Копирайтеру", "Образовательные материалы по медицинскому тесту для трёх аудиторий: врачей, медпредставителей и менеджеров корпоративных клиентов. Сдать логику разделения, структуру трёх презентаций, по 5 первых слайдов с текстом и текстовкой спикера и вопросы к медицинской команде."),
+        ("Монтажёру", "Собрать полуторачасовой вебинар с двух камер и презентации в ролик для YouTube: синхронизация, смена планов, слайды по смыслу, чистка пауз, титры. Без тяжёлой графики, смысл медицинских формулировок не менять. Бюджет 3 000 ₽."),
+    ] if ru else [
+        ("For a copywriter", "Education materials on a medical test for three audiences: doctors, medical reps and corporate account managers. Deliver the split logic, the structure of three decks, the first 5 slides of each with slide copy and speaker notes, and questions for the medical team."),
+        ("For a video editor", "Cut a 90-minute webinar shot on two cameras plus slides into a YouTube video: sync, camera switching, slides where they belong, pauses removed, captions. No heavy graphics, don't change the meaning of medical wording. Budget ₽3,000."),
+    ])
+    k["tm_plan_h"] = "План работ на 30 дней" if ru else "A 30-day work plan"
+    k["tm_plan_sub"] = "Восемь направлений одного периода" if ru else "Eight workstreams in one period"
+    k["tm_plan"] = ([
+        "Обучение врачей в лаборатории-партнёре",
+        "Telegram-канал для врачей",
+        "Вебинар с приглашённым экспертом",
+        "Концепция YouTube и Instagram",
+        "«Розовый октябрь»: контент-кампания",
+        "Digital-календарь здоровья и сайт",
+        "Мерч и печатные материалы",
+        "Конференция: раздатка, видео, стенд",
+    ] if ru else [
+        "Doctor training with a partner lab",
+        "A Telegram channel for doctors",
+        "A webinar with a guest expert",
+        "YouTube and Instagram concept",
+        "Pink October: content campaign",
+        "Digital health calendar and website",
+        "Merch and print",
+        "Conference: handouts, video, booth",
+    ])
+    k["tm_plan_note"] = ("У каждой задачи — ответственный и срок. В конце периода — отчёт по каждому направлению: статус, что сделали, следующий шаг."
+                         if ru else
+                         "Every task has an owner and a deadline. At the end of the period, a report per workstream: status, what got done, the next step.")
+    t["tk"] = k
     return t
 
 
@@ -827,6 +1078,53 @@ def render(lang):
   </div>
 </div>'''
 
+    # ---- Toolkit: working materials
+    k = t["tk"]
+    li = lambda items: "".join(f"<li>{e(x)}</li>" for x in items)
+    cards = lambda items, start=1: "".join(
+        f'<li><span class="tk-n">{i:02d}</span><h5>{e(h)}</h5><p>{e(p)}</p></li>' for i, (h, p) in enumerate(items, start))
+    tk_strategy = f'''<div class="dash" id="tk-strategy">
+  {dash_bar(k["st_h"], k["st_sub"])}
+  <div class="panels">
+    <section class="panel wide"><h4>{e(k["st_parts_h"])}</h4><p class="sub">{e(k["st_parts_sub"])}</p><ol class="tk-grid">{cards(k["st_parts"])}</ol></section>
+    <section class="panel wide"><h4>{e(k["st_fun_h"])}</h4><p class="sub">{e(k["st_fun_sub"])}</p>{chain(k["st_fun"])}</section>
+    <section class="panel"><h4>{e(k["st_audit_h"])}</h4><p class="sub">{e(k["st_audit_sub"])}</p><ul class="crit">{li(k["st_audit"])}</ul></section>
+    <section class="panel"><h4>{e(k["st_budget_h"])}</h4><p class="sub">{e(k["st_budget_sub"])}</p><ul class="crit">{li(k["st_budget"])}</ul></section>
+    <section class="panel wide"><h4>{e(k["st_learn_h"])}</h4><ul class="crit tk-learn">{li(k["st_learn"])}</ul></section>
+  </div>
+</div>'''
+    pb_table = table(k["pb_tbl_h"], k["pb_cols"], k["pb_rows"], num_cols=(1, 2, 3))
+    tk_payback = f'''<div class="dash" id="tk-payback">
+  {dash_bar(k["pb_h"], k["pb_sub"])}
+  <div class="kpis">{kpi_cells(k["pb_kpis"])}</div>
+  <div class="panels">
+    <section class="panel wide"><h4>{e(k["pb_tbl_h"])}</h4><p class="sub">{e(k["pb_tbl_sub"])}</p><div class="tk-table">{pb_table}</div></section>
+    <section class="panel"><h4>{e(k["pb_how_h"])}</h4><ul class="crit">{li(k["pb_how"])}</ul></section>
+    <section class="panel"><h4>{e(k["pb_note_h"])}</h4><p class="panel-note tk-note">{e(k["pb_note"])}</p></section>
+  </div>
+</div>'''
+    kt_rules = "".join(f"<p class=\"panel-note\">{e(x)}</p>" for x in k["kt_rules"])
+    tk_kotler = f'''<div class="dash" id="tk-kotler">
+  {dash_bar(k["kt_h"], k["kt_sub"], f'<a class="tbl-toggle" href="{k["kt_link"]}" target="_blank" rel="noopener" data-goal="template_open">{ICON["ext"]}<span>{e(k["kt_link_t"])}</span></a>')}
+  <div class="panels">
+    <section class="panel wide"><h4>{e(k["kt_steps_h"])}</h4><p class="sub">{e(k["kt_steps_sub"])}</p><ol class="tk-grid">{cards(k["kt_steps"])}</ol></section>
+    <section class="panel wide"><h4>{e(k["kt_rules_h"])}</h4>{kt_rules}</section>
+  </div>
+</div>'''
+    tm_cards = "".join(f'<li><h5>{e(h)}</h5><p>{e(p)}</p></li>' for h, p in k["tm_cards"])
+    tm_plan = "".join(f'<li><span class="tk-n">{i:02d}</span>{e(x)}</li>' for i, x in enumerate(k["tm_plan"], 1))
+    tk_team = f'''<div class="dash" id="tk-team">
+  {dash_bar(k["tm_h"], k["tm_sub"])}
+  <div class="kpis">{kpi_cells(k["tm_kpis"])}</div>
+  <div class="panels">
+    <section class="panel"><h4>{e(k["tm_hire_h"])}</h4><p class="sub">{e(k["tm_hire_sub"])}</p><ul class="crit">{li(k["tm_hire"])}</ul></section>
+    <section class="panel"><h4>{e(k["tm_brief_h"])}</h4><p class="sub">{e(k["tm_brief_sub"])}</p><ul class="crit">{li(k["tm_brief"])}</ul></section>
+    <section class="panel wide"><h4>{e(k["tm_cards_h"])}</h4><ul class="tk-cards">{tm_cards}</ul></section>
+    <section class="panel wide"><h4>{e(k["tm_plan_h"])}</h4><p class="sub">{e(k["tm_plan_sub"])}</p><ol class="tk-plan">{tm_plan}</ol>
+      <p class="panel-note">{e(k["tm_plan_note"])}</p></section>
+  </div>
+</div>'''
+
     exp = "".join(
         f'<li><span class="exp-years">{e(y)}</span><span><span class="exp-role">{e(r)}</span><br><span class="exp-org">{e(org)}</span></span>'
         f'<span class="exp-what">{e(w)}</span></li>' for y, r, org, w in t["exp"])
@@ -923,6 +1221,14 @@ def render(lang):
 <section class="section case" id="community"><div class="wrap">
   {case_top(c)}
   {comm_dash}
+</div></section>
+
+<section class="section case toolkit" id="toolkit"><div class="wrap">
+  <div class="section-head"><h2>{e(k["h"])}</h2><p>{e(k["p"])}</p></div>
+  {tk_strategy}
+  {tk_payback}
+  {tk_kotler}
+  {tk_team}
 </div></section>
 
 <section class="section" id="experience"><div class="wrap">
