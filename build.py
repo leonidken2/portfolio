@@ -131,8 +131,7 @@ def texts(lang):
                  "Marketing portfolio: GTM for the OncoDiag medtech product, dental patient acquisition at 7.9x ROAS, community growth from zero to 1,800 followers.")
     t["name"] = "Леонид Кривошеин" if ru else "Leonid Krivoshein"
     t["skip"] = "К содержанию" if ru else "Skip to content"
-    t["nav"] = [("#cases", "Кейсы" if ru else "Cases"), ("#toolkit", "Материалы" if ru else "Materials"),
-                ("#experience", "Опыт" if ru else "Experience"),
+    t["nav"] = [("#cases", "Кейсы" if ru else "Cases"), ("#experience", "Опыт" if ru else "Experience"),
                 ("#approach", "Подход" if ru else "Approach"), ("#contact", "Контакты" if ru else "Contact")]
     t["lang_link"] = ("en/", "EN", "English version") if ru else ("../", "RU", "Русская версия")
 
@@ -629,18 +628,6 @@ def texts(lang):
         "Offline workshops: venue, photo and video",
         "Equipment, tools and a reserve",
     ])
-    k["st_learn_h"] = "Что я вынес из защиты стратегии" if ru else "What I took away from presenting it"
-    k["st_learn"] = ([
-        "Стратегия должна быть инструментом запуска, а не исследовательским досье: диагноз → три приоритета → план на 30 дней.",
-        "Сначала базовый ритм: профиль, закрепы, один Reels в неделю. Telegram и бот — следующим этапом, когда ритм устоялся.",
-        "Продуктовая линейка строится под реальную модель работы врача, а не под шаблон.",
-        "После защиты — короткий follow-up: что делаем первым и что пока не делаем.",
-    ] if ru else [
-        "A strategy has to be a launch tool, not a research dossier: diagnosis → three priorities → a 30-day plan.",
-        "Basic rhythm first: profile, pinned posts, one Reel a week. Telegram and the bot come next, once the rhythm holds.",
-        "The product line is built around how the doctor actually works, not around a template.",
-        "After the presentation, a short follow-up: what we do first and what we leave for later.",
-    ])
 
     # B. Marketing payback model
     k["pb_h"] = "Окупаемость маркетинга для врача" if ru else "Marketing payback model for a doctor"
@@ -796,6 +783,24 @@ def texts(lang):
     k["tm_plan_note"] = ("У каждой задачи — ответственный и срок. В конце периода — отчёт по каждому направлению: статус, что сделали, следующий шаг."
                          if ru else
                          "Every task has an owner and a deadline. At the end of the period, a report per workstream: status, what got done, the next step.")
+    k["st_intro"] = ("Стратегия для врача, которому нужно больше онлайн-консультаций: от аудита площадок до дорожной карты внедрения."
+                     if ru else "A strategy for a doctor who needs more online consultations: from a channel audit to a rollout roadmap.")
+    k["pb_intro"] = ("Модель, которая до старта показывает врачу, сколько людей нужно в воронке и когда маркетинг окупится."
+                     if ru else "A model that shows a doctor, before anything starts, how many people the funnel needs and when marketing pays off.")
+    k["kt_intro"] = ("Шаблон, по которому я собираю стратегию: от брифа и исследований до 7P, плана и KPI."
+                     if ru else "The template I build strategies with: from the brief and research to 7P, a plan and KPIs.")
+    k["tm_intro"] = ("Как я нанимаю и веду подрядчиков: отбор по тестовому, ТЗ, план работ и отчётность."
+                     if ru else "How I hire and run contractors: test-task selection, briefs, work plans and reporting.")
+    k["pages"] = [  # slug, short nav label, title key, intro key, hub metric, hub metric label
+        ("strategy", "Стратегия" if ru else "Strategy", "st_h", "st_intro", "8", "блоков стратегии" if ru else "strategy blocks"),
+        ("payback", "Окупаемость" if ru else "Payback", "pb_h", "pb_intro", "3", "сценария расчёта" if ru else "scenarios"),
+        ("kotler", "Шаблон" if ru else "Template", "kt_h", "kt_intro", "8", "шагов шаблона" if ru else "template steps"),
+        ("team", "Процессы" if ru else "Processes", "tm_h", "tm_intro", "100+", "откликов разобрано" if ru else "applications reviewed"),
+    ]
+    k["back"] = "Портфолио" if ru else "Portfolio"
+    k["others"] = "Другие материалы" if ru else "More materials"
+    k["hub_title"] = "Рабочие материалы — Леонид Кривошеин" if ru else "Working materials — Leonid Krivoshein"
+    k["cta"] = "Обсудить задачу в Telegram" if ru else "Discuss a project on Telegram"
     t["tk"] = k
     return t
 
@@ -921,6 +926,56 @@ def consent_banner(t):
             f'<p>{e(t["ck_text"])}</p><div class="consent-actions">'
             f'<button type="button" class="btn btn-solid" data-consent="yes">{e(t["ck_yes"])}</button>'
             f'<button type="button" class="btn btn-line" data-consent="no">{e(t["ck_no"])}</button></div></div>')
+
+
+def tk_blocks(t):
+    """The four working-material dashboards, keyed by page slug."""
+    k = t["tk"]
+    li = lambda items: "".join(f"<li>{e(x)}</li>" for x in items)
+    cards = lambda items, start=1: "".join(
+        f'<li><span class="tk-n">{i:02d}</span><h5>{e(h)}</h5><p>{e(p)}</p></li>' for i, (h, p) in enumerate(items, start))
+    tk_strategy = f'''<div class="dash" id="tk-strategy">
+  {dash_bar(k["st_sub"], "")}
+  <div class="panels">
+    <section class="panel wide"><h4>{e(k["st_parts_h"])}</h4><p class="sub">{e(k["st_parts_sub"])}</p><ol class="tk-grid">{cards(k["st_parts"])}</ol></section>
+    <section class="panel wide"><h4>{e(k["st_fun_h"])}</h4><p class="sub">{e(k["st_fun_sub"])}</p>{chain(k["st_fun"])}</section>
+    <section class="panel"><h4>{e(k["st_audit_h"])}</h4><p class="sub">{e(k["st_audit_sub"])}</p><ul class="crit">{li(k["st_audit"])}</ul></section>
+    <section class="panel"><h4>{e(k["st_budget_h"])}</h4><p class="sub">{e(k["st_budget_sub"])}</p><ul class="crit">{li(k["st_budget"])}</ul></section>
+  </div>
+</div>'''
+    pb_table = table(k["pb_tbl_h"], k["pb_cols"], k["pb_rows"], num_cols=(1, 2, 3))
+    tk_payback = f'''<div class="dash" id="tk-payback">
+  {dash_bar(k["pb_sub"], "")}
+  <div class="kpis">{kpi_cells(k["pb_kpis"])}</div>
+  <div class="panels">
+    <section class="panel wide"><h4>{e(k["pb_tbl_h"])}</h4><p class="sub">{e(k["pb_tbl_sub"])}</p><div class="tk-table">{pb_table}</div></section>
+    <section class="panel"><h4>{e(k["pb_how_h"])}</h4><ul class="crit">{li(k["pb_how"])}</ul></section>
+    <section class="panel"><h4>{e(k["pb_note_h"])}</h4><p class="panel-note tk-note">{e(k["pb_note"])}</p></section>
+  </div>
+</div>'''
+    kt_rules = "".join(f"<p class=\"panel-note\">{e(x)}</p>" for x in k["kt_rules"])
+    tk_kotler = f'''<div class="dash" id="tk-kotler">
+  {dash_bar(k["kt_sub"], "", f'<a class="tbl-toggle" href="{k["kt_link"]}" target="_blank" rel="noopener" data-goal="template_open">{ICON["ext"]}<span>{e(k["kt_link_t"])}</span></a>')}
+  <div class="panels">
+    <section class="panel wide"><h4>{e(k["kt_steps_h"])}</h4><p class="sub">{e(k["kt_steps_sub"])}</p><ol class="tk-grid">{cards(k["kt_steps"])}</ol></section>
+    <section class="panel wide"><h4>{e(k["kt_rules_h"])}</h4>{kt_rules}</section>
+  </div>
+</div>'''
+    tm_cards = "".join(f'<li><h5>{e(h)}</h5><p>{e(p)}</p></li>' for h, p in k["tm_cards"])
+    tm_plan = "".join(f'<li><span class="tk-n">{i:02d}</span>{e(x)}</li>' for i, x in enumerate(k["tm_plan"], 1))
+    tk_team = f'''<div class="dash" id="tk-team">
+  {dash_bar(k["tm_sub"], "")}
+  <div class="kpis">{kpi_cells(k["tm_kpis"])}</div>
+  <div class="panels">
+    <section class="panel"><h4>{e(k["tm_hire_h"])}</h4><p class="sub">{e(k["tm_hire_sub"])}</p><ul class="crit">{li(k["tm_hire"])}</ul></section>
+    <section class="panel"><h4>{e(k["tm_brief_h"])}</h4><p class="sub">{e(k["tm_brief_sub"])}</p><ul class="crit">{li(k["tm_brief"])}</ul></section>
+    <section class="panel wide"><h4>{e(k["tm_cards_h"])}</h4><ul class="tk-cards">{tm_cards}</ul></section>
+    <section class="panel wide"><h4>{e(k["tm_plan_h"])}</h4><p class="sub">{e(k["tm_plan_sub"])}</p><ol class="tk-plan">{tm_plan}</ol>
+      <p class="panel-note">{e(k["tm_plan_note"])}</p></section>
+  </div>
+</div>'''
+
+    return {"strategy": tk_strategy, "payback": tk_payback, "kotler": tk_kotler, "team": tk_team}
 
 
 # ---------------------------------------------------------------- sections
@@ -1078,53 +1133,6 @@ def render(lang):
   </div>
 </div>'''
 
-    # ---- Toolkit: working materials
-    k = t["tk"]
-    li = lambda items: "".join(f"<li>{e(x)}</li>" for x in items)
-    cards = lambda items, start=1: "".join(
-        f'<li><span class="tk-n">{i:02d}</span><h5>{e(h)}</h5><p>{e(p)}</p></li>' for i, (h, p) in enumerate(items, start))
-    tk_strategy = f'''<div class="dash" id="tk-strategy">
-  {dash_bar(k["st_h"], k["st_sub"])}
-  <div class="panels">
-    <section class="panel wide"><h4>{e(k["st_parts_h"])}</h4><p class="sub">{e(k["st_parts_sub"])}</p><ol class="tk-grid">{cards(k["st_parts"])}</ol></section>
-    <section class="panel wide"><h4>{e(k["st_fun_h"])}</h4><p class="sub">{e(k["st_fun_sub"])}</p>{chain(k["st_fun"])}</section>
-    <section class="panel"><h4>{e(k["st_audit_h"])}</h4><p class="sub">{e(k["st_audit_sub"])}</p><ul class="crit">{li(k["st_audit"])}</ul></section>
-    <section class="panel"><h4>{e(k["st_budget_h"])}</h4><p class="sub">{e(k["st_budget_sub"])}</p><ul class="crit">{li(k["st_budget"])}</ul></section>
-    <section class="panel wide"><h4>{e(k["st_learn_h"])}</h4><ul class="crit tk-learn">{li(k["st_learn"])}</ul></section>
-  </div>
-</div>'''
-    pb_table = table(k["pb_tbl_h"], k["pb_cols"], k["pb_rows"], num_cols=(1, 2, 3))
-    tk_payback = f'''<div class="dash" id="tk-payback">
-  {dash_bar(k["pb_h"], k["pb_sub"])}
-  <div class="kpis">{kpi_cells(k["pb_kpis"])}</div>
-  <div class="panels">
-    <section class="panel wide"><h4>{e(k["pb_tbl_h"])}</h4><p class="sub">{e(k["pb_tbl_sub"])}</p><div class="tk-table">{pb_table}</div></section>
-    <section class="panel"><h4>{e(k["pb_how_h"])}</h4><ul class="crit">{li(k["pb_how"])}</ul></section>
-    <section class="panel"><h4>{e(k["pb_note_h"])}</h4><p class="panel-note tk-note">{e(k["pb_note"])}</p></section>
-  </div>
-</div>'''
-    kt_rules = "".join(f"<p class=\"panel-note\">{e(x)}</p>" for x in k["kt_rules"])
-    tk_kotler = f'''<div class="dash" id="tk-kotler">
-  {dash_bar(k["kt_h"], k["kt_sub"], f'<a class="tbl-toggle" href="{k["kt_link"]}" target="_blank" rel="noopener" data-goal="template_open">{ICON["ext"]}<span>{e(k["kt_link_t"])}</span></a>')}
-  <div class="panels">
-    <section class="panel wide"><h4>{e(k["kt_steps_h"])}</h4><p class="sub">{e(k["kt_steps_sub"])}</p><ol class="tk-grid">{cards(k["kt_steps"])}</ol></section>
-    <section class="panel wide"><h4>{e(k["kt_rules_h"])}</h4>{kt_rules}</section>
-  </div>
-</div>'''
-    tm_cards = "".join(f'<li><h5>{e(h)}</h5><p>{e(p)}</p></li>' for h, p in k["tm_cards"])
-    tm_plan = "".join(f'<li><span class="tk-n">{i:02d}</span>{e(x)}</li>' for i, x in enumerate(k["tm_plan"], 1))
-    tk_team = f'''<div class="dash" id="tk-team">
-  {dash_bar(k["tm_h"], k["tm_sub"])}
-  <div class="kpis">{kpi_cells(k["tm_kpis"])}</div>
-  <div class="panels">
-    <section class="panel"><h4>{e(k["tm_hire_h"])}</h4><p class="sub">{e(k["tm_hire_sub"])}</p><ul class="crit">{li(k["tm_hire"])}</ul></section>
-    <section class="panel"><h4>{e(k["tm_brief_h"])}</h4><p class="sub">{e(k["tm_brief_sub"])}</p><ul class="crit">{li(k["tm_brief"])}</ul></section>
-    <section class="panel wide"><h4>{e(k["tm_cards_h"])}</h4><ul class="tk-cards">{tm_cards}</ul></section>
-    <section class="panel wide"><h4>{e(k["tm_plan_h"])}</h4><p class="sub">{e(k["tm_plan_sub"])}</p><ol class="tk-plan">{tm_plan}</ol>
-      <p class="panel-note">{e(k["tm_plan_note"])}</p></section>
-  </div>
-</div>'''
-
     exp = "".join(
         f'<li><span class="exp-years">{e(y)}</span><span><span class="exp-role">{e(r)}</span><br><span class="exp-org">{e(org)}</span></span>'
         f'<span class="exp-what">{e(w)}</span></li>' for y, r, org, w in t["exp"])
@@ -1223,14 +1231,6 @@ def render(lang):
   {comm_dash}
 </div></section>
 
-<section class="section case toolkit" id="toolkit"><div class="wrap">
-  <div class="section-head"><h2>{e(k["h"])}</h2><p>{e(k["p"])}</p></div>
-  {tk_strategy}
-  {tk_payback}
-  {tk_kotler}
-  {tk_team}
-</div></section>
-
 <section class="section" id="experience"><div class="wrap">
   <div class="section-head"><h2>{e(t["exp_h"])}</h2></div>
   <ol class="exp">{exp}</ol>
@@ -1275,6 +1275,108 @@ def render(lang):
 '''
 
 
+def render_material(lang, slug=None):
+    """A standalone page for one working material (slug) or the materials hub (slug=None).
+    Lives in materials/ (ru) and en/materials/ (en); not linked from the main page."""
+    t = texts(lang)
+    k = t["tk"]
+    ru = lang == "ru"
+    P = "../" if ru else "../../"          # site root, for assets
+    home = "../"                            # this language's main page
+    fname = f"{slug}.html" if slug else ""
+    other = (f"../en/materials/{fname}" if ru else f"../../materials/{fname}")
+    pages = {pg[0]: pg for pg in k["pages"]}
+    hub_h = k["h"]
+    if slug:
+        _, _, title_key, intro_key, _, _ = pages[slug]
+        h1, intro = k[title_key], k[intro_key]
+        page_title = f"{h1} — {t['name']}"
+    else:
+        h1, intro = hub_h, k["p"]
+        page_title = k["hub_title"]
+
+    nav = "".join(
+        f'<a href="{s_}.html"{" aria-current=\"page\"" if s_ == slug else ""}>{e(lab)}</a>' for s_, lab, *_ in k["pages"])
+    tg = f'<a class="btn btn-solid" href="https://t.me/{t["c_tg"]}" target="_blank" rel="noopener" data-goal="telegram">{ICON["tg"]}{e(k["cta"])}</a>'
+    mail = f'<a class="btn btn-line" href="mailto:{t["c_mail"]}" data-goal="email">{ICON["mail"]}{e(t["c_btn_mail_short"])}</a>'
+
+    if slug:
+        blocks = tk_blocks(t)
+        others = "".join(
+            f'<a href="{s_}.html"><span class="index-title">{e(k[tk_])}</span><span class="index-desc">{e(k[ik])}</span></a>'
+            for s_, _, tk_, ik, _, _ in k["pages"] if s_ != slug)
+        body = f"""{blocks[slug]}
+  <div class="tk-foot">
+    <h2>{e(k["others"])}</h2>
+    <nav class="tk-others" aria-label="{e(k["others"])}">{others}</nav>
+    <div class="actions">{tg}{mail}</div>
+  </div>"""
+    else:
+        idx = "".join(
+            f'<a href="{s_}.html"><span class="index-years">{i:02d}</span><span><span class="index-title">{e(k[tk_])}</span>'
+            f'<span class="index-desc">{e(k[ik])}</span></span><span class="index-metric">{e(m)}<small>{e(ml)}</small></span></a>'
+            for i, (s_, _, tk_, ik, m, ml) in enumerate(k["pages"], 1))
+        body = f"""<nav class="index" aria-label="{e(hub_h)}">{idx}</nav>
+  <div class="tk-foot"><div class="actions">{tg}{mail}</div></div>"""
+
+    site = SITE_URL.rstrip("/")
+    alt_links = (f'<link rel="alternate" hreflang="ru" href="{site}/materials/{fname}">'
+                 f'<link rel="alternate" hreflang="en" href="{site}/en/materials/{fname}">'
+                 f'<link rel="canonical" href="{site}/{"" if ru else "en/"}materials/{fname}">') if site else ""
+    og_img = f'<meta property="og:image" content="{site}/assets/og-{lang}.png">' if site else ""
+    ltext = "EN" if ru else "RU"
+    ltitle = "English version" if ru else "Русская версия"
+    crumbs = f'<a href="{home}">← {e(k["back"])}</a>' + (f' <span aria-hidden="true">/</span> <a href="./">{e(hub_h)}</a>' if slug else "")
+
+    return f"""<!doctype html>
+<html lang="{t["html_lang"]}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{e(page_title)}</title>
+<meta name="description" content="{e(intro)}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{e(page_title)}">
+<meta property="og:description" content="{e(intro)}">
+<meta property="og:locale" content="{"ru_RU" if ru else "en_US"}">
+{og_img}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#edf2f4">
+{alt_links}
+<link rel="icon" href="{P}assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="{P}assets/fonts/geologica-{"cyrillic" if ru else "latin"}-full-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{P}assets/style.css">
+<script>document.documentElement.className+=" js"</script>
+{metrika(lang)}
+</head>
+<body{f' data-ym="{METRIKA_ID}"' if METRIKA_ID else ""}>
+<a class="skip" href="#main">{e(t["skip"])}</a>
+<header class="topbar"><div class="wrap">
+  <a class="brand" href="{home}">{e(t["name"])}</a>
+  <nav class="nav" aria-label="{e(hub_h)}">{nav}</nav>
+  <a class="lang" href="{other}" hreflang="{"en" if ru else "ru"}" title="{e(ltitle)}" data-goal="lang_switch">{ltext}</a>
+</div></header>
+
+<main id="main">
+<section class="section toolkit"><div class="wrap">
+  <p class="tk-crumbs">{crumbs}</p>
+  <div class="section-head tk-head"><h1 class="tk-h1">{e(h1)}</h1><p>{e(intro)}</p></div>
+  {body}
+</div></section>
+</main>
+
+<footer class="footer"><div class="wrap">
+  <p>© 2026 {e(t["name"])}</p>
+  <p>{e(k["p"])}</p>
+  <p><a href="{other}" hreflang="{"en" if ru else "ru"}" data-goal="lang_switch">{e(ltitle)}</a>{f' <button type="button" class="linkbtn" data-consent-open hidden>{e(t["ck_settings"])}</button>' if METRIKA_ID else ""}</p>
+</div></footer>
+{consent_banner(t)}
+<script src="{P}assets/app.js" defer></script>
+</body>
+</html>
+"""
+
+
 def keep_numbers_together(html):
     """'1 800' must never break across lines: swap the plain space for a no-break space."""
     import re
@@ -1287,5 +1389,12 @@ if __name__ == "__main__":
     (ROOT / "index.html").write_text(keep_numbers_together(render("ru")), encoding="utf-8")
     (ROOT / "en").mkdir(exist_ok=True)
     (ROOT / "en" / "index.html").write_text(render("en"), encoding="utf-8")
+    for lang, base in (("ru", ROOT / "materials"), ("en", ROOT / "en" / "materials")):
+        base.mkdir(parents=True, exist_ok=True)
+        fix = keep_numbers_together if lang == "ru" else (lambda h: h)
+        (base / "index.html").write_text(fix(render_material(lang)), encoding="utf-8")
+        for slug in ("strategy", "payback", "kotler", "team"):
+            (base / f"{slug}.html").write_text(fix(render_material(lang, slug)), encoding="utf-8")
     print("built index.html and en/index.html")
+    print("built materials/ and en/materials/: index, strategy, payback, kotler, team")
     print({k: D[k] for k in ("c_other", "g_cpp", "g_rpp", "i_rpp")}, f"CTR {D['i_ctr']:.2f}%", f"click->patient {D['i_c2p']:.2f}%", f"CPC ${D['i_cpc']:.2f}")
