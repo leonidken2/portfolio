@@ -81,14 +81,15 @@ def content(lang):
                  "Key project: OncoDiag — product marketing and GTM for a cancer-diagnostics test based on the CA-62 biomarker"),
             lines=[],
             bullets=[
-                f"Провёл исследование аудитории: <b>{D['resp']}+ респондентов</b> и <b>{D['interviews']} глубинных интервью</b>" if ru else
-                f"Ran customer research: <b>{D['resp']}+ respondents</b> and <b>{D['interviews']} in-depth interviews</b>",
-                f"Из <b>{D['ideas']} идей</b> отобрал <b>{D['hyp']} приоритетных GTM-гипотез</b> по четырём критериям: стадия продукта, реализуемость, измеримость, масштабируемость" if ru else
-                f"Narrowed <b>{D['ideas']} ideas</b> to <b>{D['hyp']} priority GTM hypotheses</b> on four criteria: product stage, feasibility, measurability, scalability",
-                f"Финализировал позиционирование CA-62, собрал образовательную программу для врачей на <b>{D['lecture']} слайда</b> и запустил врачебный канал" if ru else
-                f"Finalized CA-62 positioning, built a <b>{D['lecture']}-slide</b> physician education program and launched a physician channel",
-                f"Выстроил B2B-маркетинг для врачей, лабораторий и партнёров: скрипты для администраторов Ситилаб, обучающий набор из <b>{D['formats']} форматов</b>, {D['decks']} презентации продукта" if ru else
-                f"Built B2B marketing for doctors, labs and partners: Citilab front-desk scripts, a <b>{D['formats']}-format</b> partner toolkit, {D['decks']} product presentations",
+                f"Составил анкету исследования (<b>{D['resp']}+ респондентов</b>) и сам провёл <b>{D['interviews']} глубинных интервью</b>" if ru else
+                f"Wrote the research survey (<b>{D['resp']}+ respondents</b>) and ran <b>{D['interviews']} in-depth interviews</b> myself",
+                f"Построил воронку проблемы и из <b>{D['ideas']} идей</b> отобрал <b>{D['hyp']} приоритетных GTM-гипотез</b> по четырём критериям: стадия продукта, реализуемость, измеримость, масштабируемость" if ru else
+                f"Built a problem funnel and narrowed <b>{D['ideas']} ideas</b> to <b>{D['hyp']} priority GTM hypotheses</b> on four criteria: product stage, feasibility, measurability, scalability",
+                f"Финализировал позиционирование CA-62 и поставил ТЗ на образовательную программу для врачей (<b>{D['lecture']} слайда</b>) и врачебный канал" if ru else
+                f"Finalized CA-62 positioning and briefed the <b>{D['lecture']}-slide</b> physician education program and the physician channel",
+                f"Выстроил B2B-коммуникацию для врачей, лабораторий и партнёров: по моим ТЗ копирайтеры и дизайнеры сделали скрипты для администраторов Ситилаб, обучающий набор из <b>{D['formats']} форматов</b>, {D['decks']} презентации продукта" if ru else
+                f"Built B2B communication for doctors, labs and partners: from my briefs copywriters and designers produced Citilab front-desk scripts, a <b>{D['formats']}-format</b> partner toolkit, {D['decks']} product presentations",
+                "Предложил и запустил чат-бота в Salebot вместе с разработчиком" if ru else "Proposed and launched a Salebot chatbot with a developer",
                 f"Проверил коммуникацию на конференции PreventMed: <b>{D['pm_materials']}+ материалов</b>, {D['pm_scenarios']} сценария внедрения в клинику; вопросы врачей вернул в обучение" if ru else
                 f"Field-tested messaging at the PreventMed conference: <b>{D['pm_materials']}+ materials</b>, {D['pm_scenarios']} clinic adoption scenarios; doctors' questions fed back into training",
                 f"Поддерживал образовательные мероприятия для <b>{D['hcp']}+ медицинских специалистов</b>" if ru else
