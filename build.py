@@ -80,6 +80,19 @@ def e(s):
     return escape(str(s), quote=True)
 
 
+GEL_PER_USD = 2.7  # average lari rate 2023–2025: clinic money is shown in dollars, readers abroad don't know the lari
+
+
+def usd(v_gel, lang):
+    """23000 GEL -> '$8,5 тыс.' / '$8.5K'; small sums -> '$33'."""
+    v = v_gel / GEL_PER_USD
+    if v < 1000:
+        return f"${round(v)}"
+    x = v / 1000
+    s = str(round(x)) if abs(x - round(x)) < 0.05 or x >= 100 else dec(x, lang)
+    return f"${s} тыс." if lang == "ru" else f"${s}K"
+
+
 # ---------------------------------------------------------------- icons
 ICON = {
     "mail": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>',
@@ -120,8 +133,7 @@ def coins(value, label, color, lang):
 # ---------------------------------------------------------------- texts
 def texts(lang):
     ru = lang == "ru"
-    gel = "лари" if ru else "GEL"
-    money = (lambda v: f"{n(v, lang)} {gel}")
+    money = (lambda v: usd(v, lang))
     t = {}
     t["html_lang"] = lang
     t["title"] = ("Леонид Кривошеин — product marketing и growth в HealthTech" if ru
@@ -138,18 +150,18 @@ def texts(lang):
     t["h1"] = "Леонид<br>Кривошеин" if ru else "Leonid<br>Krivoshein"
     t["role"] = ("Product marketing, growth и GTM в HealthTech и медицине" if ru
                  else "Product marketing, growth and GTM for HealthTech and healthcare")
-    t["lead"] = ("Начинаю с исследования аудитории и заканчиваю выручкой, которую можно посчитать. Сейчас вывожу на рынок медтех-продукт для онкодиагностики, до этого два года строил каналы привлечения пациентов для стоматологии в Батуми."
+    t["lead"] = ("Начинаю с исследования аудитории и заканчиваю выручкой, которую можно посчитать. Сейчас вывожу на рынок медтех-продукт для онкодиагностики, до этого два года строил каналы привлечения пациентов для частной стоматологии."
                  if ru else
-                 "I start with customer research and finish with revenue you can count. Right now I'm taking a cancer-diagnostics medtech product to market; before that I spent two years building patient acquisition for a dental clinic in Batumi.")
+                 "I start with customer research and finish with revenue you can count. Right now I'm taking a cancer-diagnostics medtech product to market; before that I spent two years building patient acquisition for a private dental clinic.")
     t["cta_cases"] = "Смотреть кейсы" if ru else "See the cases"
     t["cta_mail"] = "Написать на почту" if ru else "Email me"
     t["cta_tg"] = "Написать в Telegram" if ru else "Message on Telegram"
     t["photo_alt"] = "Леонид Кривошеин" if ru else "Leonid Krivoshein"
 
-    t["roas_h"] = ("Каждый лари в Google Ads вернул 7,9 лари выручки" if ru
-                   else "Every lari spent on Google Ads brought back 7.9 in revenue")
-    t["roas_src"] = ("Стоматология Minimum, Батуми, 2023–2025" if ru
-                     else "Minimum dental clinic, Batumi, 2023–2025")
+    t["roas_h"] = ("Каждый доллар в Google Ads вернул 7,9 доллара выручки" if ru
+                   else "Every dollar spent on Google Ads brought back $7.9 in revenue")
+    t["roas_src"] = ("Стоматология Minimum, 2023–2025" if ru
+                     else "Minimum dental clinic, 2023–2025")
     t["roas_rows"] = [
         (money(D["g_spend"]), "вложено в рекламу" if ru else "ad spend", "spend", D["g_spend"] / D["g_rev"] * 100),
         (money(D["g_rev"]), "атрибутированная выручка" if ru else "attributed revenue", "revenue", 100.0),
@@ -294,15 +306,16 @@ def texts(lang):
     # ---- Dental
     d = {}
     d["years"] = "2023 — 2025"
-    d["where"] = "Батуми, Грузия" if ru else "Batumi, Georgia"
+    d["where"] = "Частная стоматология" if ru else "Private dental clinic"
     d["role"] = "Growth & Performance Marketing Lead"
     d["meta_l"] = ("Период", "Где", "Роль") if ru else ("Period", "Where", "Role")
     d["h2"] = ("Minimum Innovative Dentistry: пациенты из трёх каналов" if ru
                else "Minimum Innovative Dentistry: patients from three channels")
-    d["context"] = ("Частная стоматология в Батуми. Цель была не «вести рекламу», а приводить пациентов и знать, сколько выручки принёс каждый канал. Для этого реклама, страницы услуг, WhatsApp, запись и CRM работали как одна цепочка."
+    d["context"] = ("Частная стоматология. Цель была не «вести рекламу», а приводить пациентов и знать, сколько выручки принёс каждый канал. Для этого реклама, страницы услуг, WhatsApp, запись и CRM работали как одна цепочка."
                     if ru else
-                    "A private dental clinic in Batumi. The goal wasn't to “run ads” but to bring in patients and know how much revenue each channel produced. So ads, service pages, WhatsApp, appointments and the CRM worked as one chain.")
+                    "A private dental clinic. The goal wasn't to “run ads” but to bring in patients and know how much revenue each channel produced. So ads, service pages, WhatsApp, appointments and the CRM worked as one chain.")
     d["did"] = [
+        "За 2 года — <b>более 1 000 первичных пациентов</b> из всех каналов: реклама, Instagram, отзывы и рекомендации" if ru else "<b>1,000+ new patients</b> over 2 years across all channels: ads, Instagram, reviews and referrals",
         "Построил и вёл <b>3 воронки привлечения</b>: Google Ads, Instagram и органический поиск" if ru else "Built and managed <b>3 acquisition funnels</b> across Google Ads, Instagram and organic search",
         "Связал рекламу со страницами услуг, CRM, WhatsApp, записью, пациентами и выручкой" if ru else "Connected acquisition with landing pages, CRM, WhatsApp, appointments, patients and revenue",
         f"Создал <b>{D['seo_pages']} посадочных страниц</b> под конкретные стоматологические запросы и использовал их и в SEO, и в Google Ads: <b>{dec(D['pages_sessions'] / 1000, lang)} тыс. сессий</b> за период" if ru else f"Built <b>{D['seo_pages']} service-specific landing pages</b> around dental search demand and used them for both SEO and Google Ads: <b>{dec(D['pages_sessions'] / 1000, lang)}K sessions</b> over the period",
@@ -355,16 +368,16 @@ def texts(lang):
         ],
     }
     d["rev_h"] = "Атрибутированная выручка" if ru else "Attributed revenue"
-    d["rev_sub"] = "По каналам, лари" if ru else "By channel, GEL"
+    d["rev_sub"] = "По каналам, $" if ru else "By channel, $"
     d["pat_h"] = "Пациенты из рекламы" if ru else "Patients from ads"
     d["pat_sub"] = "По каналам, человек" if ru else "By channel, people"
     d["seo_none"] = "отдельно не считалась" if ru else "not attributed separately"
     d["rev"] = [("google", "Google Ads", D["g_rev"], money(D["g_rev"])), ("insta", "Instagram", D["i_rev"], money(D["i_rev"])), ("seo", "SEO", None, None)]
     d["pat"] = [("google", "Google Ads", D["g_pat"], n(D["g_pat"], lang)), ("insta", "Instagram", D["i_pat"], str(D["i_pat"])), ("seo", "SEO", None, None)]
     d["coin_h"] = "Окупаемость Google Ads" if ru else "Google Ads payback"
-    d["coin_sub"] = "Один кружок — один лари" if ru else "One circle is one lari"
-    d["coin_rows"] = [("1 лари рекламы" if ru else "1 lari of ads", 1.0, "var(--google-light)"),
-                      (f"{dec(D['roas'], lang)} лари выручки" if ru else f"{dec(D['roas'], lang)} lari of revenue", D["roas"], "var(--google)")]
+    d["coin_sub"] = "Один кружок — один доллар" if ru else "One circle is one dollar"
+    d["coin_rows"] = [("$1 рекламы" if ru else "$1 of ads", 1.0, "var(--google-light)"),
+                      (f"${dec(D['roas'], lang)} выручки" if ru else f"${dec(D['roas'], lang)} of revenue", D["roas"], "var(--google)")]
     d["lad_h"] = "Воронка Instagram" if ru else "Instagram funnel"
     d["lad_sub"] = "От показа до пациента в CRM" if ru else "From impression to a patient in the CRM"
     d["lad"] = [
@@ -422,9 +435,9 @@ def texts(lang):
                   "yandex_maps": "Yandex Maps", "ref": "Referrals", "other": "Other"})
     d["tbl3"] = ([(raw_names[k], str(v), f"{round(v / D['leads_src'] * 100)}%") for k, v in SRC_RAW]
                  + [("Итого с указанным источником" if ru else "Total that named a source", str(D["leads_src"]), "100%")])
-    d["note"] = ("Выручка атрибутированная: обращения из рекламы связаны с записями, пациентами и оплатами. Сессии страниц услуг включают все источники трафика. Источник заявки пациент указывал сам, среди поисковых есть несколько тестовых заявок. Значения с «~» посчитаны по этим данным."
+    d["note"] = ("Выручка атрибутированная: обращения из рекламы связаны с записями, пациентами и оплатами. Сессии страниц услуг включают все источники трафика. Суммы клиники пересчитаны из лари в доллары по среднему курсу 2,7 лари за $1. Источник заявки пациент указывал сам. Значения с «~» посчитаны по этим данным."
                  if ru else
-                 "Revenue is attributed: ad inquiries are linked to appointments, patients and payments. Service-page sessions include every traffic source. Lead sources are self-reported, and a few test leads sit among the search ones. Values marked “~” are calculated from that data.")
+                 "Revenue is attributed: ad inquiries are linked to appointments, patients and payments. Service-page sessions include every traffic source. Clinic amounts are converted from Georgian lari to US dollars at an average 2.7 GEL per $1. Lead sources are self-reported. Values marked “~” are calculated from that data.")
     t["dental"] = d
 
     # ---- Community
@@ -492,7 +505,7 @@ def texts(lang):
         ("2025 — сейчас" if ru else "2025 — present", "Marketing Strategist / Project Coordinator", "RS Agency, удалённо" if ru else "RS Agency, remote",
          "OncoDiag: GTM и product marketing. Также исследования рынка, сегментация 88 медицинских специальностей, координация клиентских проектов." if ru else
          "OncoDiag: GTM and product marketing. Also market research, segmentation of 88 medical specialties, client project coordination."),
-        ("2023 — 2025", "Growth & Performance Marketing Lead", "Minimum Innovative Dentistry, Батуми" if ru else "Minimum Innovative Dentistry, Batumi",
+        ("2023 — 2025", "Growth & Performance Marketing Lead", "Minimum Innovative Dentistry",
          "Google Ads, Instagram, SEO, CRM и контент. ROAS 7,9× в Google Ads." if ru else "Google Ads, Instagram, SEO, CRM and content. 7.9x ROAS on Google Ads."),
         ("2018 — 2019", "Founder / Community Growth Lead", "Медиа-проект, Санкт-Петербург" if ru else "Media project, Saint Petersburg",
          "Рост с нуля до 1 800 подписчиков, команда из 10 человек." if ru else "Growth from zero to 1,800 followers, a team of 10."),
@@ -512,8 +525,8 @@ def texts(lang):
          f"Google Ads: ROAS {dec(D['roas'], lang)}×" if ru else f"Google Ads: {dec(D['roas'], lang)}x ROAS"),
     ]
     t["tools_h"] = "Инструменты" if ru else "Tools"
-    t["tools"] = (["Google Ads", "Meta Ads", "Яндекс Директ", "SEO-страницы услуг", "CRM", "WhatsApp Business", "Make.com", "Kaiten", "опросы", "глубинные интервью"] if ru
-                  else ["Google Ads", "Meta Ads", "Yandex Direct", "SEO service pages", "CRM", "WhatsApp Business", "Make.com", "Kaiten", "surveys", "in-depth interviews"])
+    t["tools"] = (["Google Ads", "Meta Ads", "Яндекс Директ", "SEO-страницы услуг", "CRM", "WhatsApp Business", "Tilda", "Figma", "Salebot", "Kaiten", "опросы", "глубинные интервью"] if ru
+                  else ["Google Ads", "Meta Ads", "Yandex Direct", "SEO service pages", "CRM", "WhatsApp Business", "Tilda", "Figma", "Salebot", "Kaiten", "surveys", "in-depth interviews"])
 
     # contact
     t["c_h"] = "Обсудим вашу задачу" if ru else "Let's talk about your project"
@@ -806,11 +819,11 @@ def texts(lang):
 
 
 # ---------------------------------------------------------------- render helpers
-UNITS = ("лари", "GEL")
+UNITS = ("тыс.",)
 
 
 def unit_small(val):
-    """'181 000 лари' -> '181 000 <small>лари</small>' so big figures fit their tile."""
+    """'$67 тыс.' -> '$67 <small>тыс.</small>' so big figures fit their tile."""
     head, _, tail = str(val).rpartition(" ")
     if head and tail in UNITS:
         return f"{e(head)}<small>&nbsp;{e(tail)}</small>"
@@ -984,7 +997,7 @@ def render(lang):
     ru = lang == "ru"
     P = "" if ru else "../"
     o, d, c = t["onco"], t["dental"], t["comm"]
-    gel_unit = "лари" if ru else "GEL"
+    gel_unit = "$"
     ppl_unit = "человек" if ru else "people"
 
     nav = "".join(f'<a href="{h}">{e(lab)}</a>' for h, lab in t["nav"])

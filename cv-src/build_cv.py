@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent
 spec = importlib.util.spec_from_file_location("portfolio_build", ROOT / "build.py")
 site = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(site)
-D, n, dec = site.D, site.n, site.dec
+D, n, dec, usd = site.D, site.n, site.dec, site.usd
 
 PORTFOLIO = "leonidken2.github.io/portfolio"
 MAIL = "kriwoshein.leonid248@gmail.com"
@@ -40,7 +40,6 @@ def k(v, lang):
 
 def content(lang):
     ru = lang == "ru"
-    gel = "лари" if ru else "GEL"
     c = {}
     c["title"] = "Леонид Кривошеин — резюме" if ru else "Leonid Krivoshein — resume"
     c["name"] = "Леонид Кривошеин" if ru else "Leonid Krivoshein"
@@ -57,15 +56,15 @@ def content(lang):
         c["contacts"].append(("Дата рождения", "20.12.1996", None))
     c["summary"] = (
         f"Маркетолог в HealthTech, медицине и B2B. Начинаю с исследования аудитории и заканчиваю выручкой, которую можно посчитать: "
-        f"{k(D['g_rev'], lang)} лари атрибутированной выручки при ROAS {dec(D['roas'], lang)}× в Google Ads, {D['g_pat']} пациент, "
+        f"{usd(D['g_rev'], lang)} атрибутированной выручки при ROAS {dec(D['roas'], lang)}× в Google Ads, {D['g_pat']} пациент, "
         f"GTM-исследование на {D['resp']}+ респондентов и {D['interviews']} интервью."
         if ru else
         f"Marketer in HealthTech, healthcare and B2B. I start with customer research and finish with revenue you can count: "
-        f"{k(D['g_rev'], lang)} GEL attributed revenue at {dec(D['roas'], lang)}x ROAS on Google Ads, {D['g_pat']} patients, "
+        f"{usd(D['g_rev'], lang)} attributed revenue at {dec(D['roas'], lang)}x ROAS on Google Ads, {D['g_pat']} patients, "
         f"GTM research with {D['resp']}+ respondents and {D['interviews']} interviews.")
     c["kpis"] = [
         (f"{dec(D['roas'], lang)}×", "ROAS в Google Ads" if ru else "Google Ads ROAS"),
-        (f"{k(D['g_rev'], lang)} {gel}" if ru else f"{k(D['g_rev'], lang)} GEL", "атрибутированной выручки" if ru else "attributed revenue"),
+        (usd(D['g_rev'], lang), "атрибутированной выручки" if ru else "attributed revenue"),
         (str(D["g_pat"]), "пациент из рекламы" if ru else "patients from ads"),
         (f"{D['resp']}+", "респондентов в GTM-исследовании" if ru else "GTM research respondents"),
         (f"0 → {n(D['c_total'], lang)}", "подписчиков сообщества" if ru else "community followers"),
@@ -104,15 +103,15 @@ def content(lang):
         ),
         dict(
             years="2023 — 2025",
-            where="Батуми" if ru else "Batumi",
+            where="Грузия" if ru else "Georgia",
             role="Growth & Performance Marketing Lead",
             org="Minimum Innovative Dentistry",
             sub=None,
             lines=[
-                ("Google Ads", f"{k(D['g_spend'], lang)} {gel} бюджета → <b>{k(D['g_rev'], lang)} {gel} атрибутированной выручки</b> • ROAS {dec(D['roas'], lang)}× • {D['g_pat']} пациент" if ru else
-                 f"{k(D['g_spend'], lang)} GEL spend → <b>{k(D['g_rev'], lang)} GEL attributed revenue</b> • {dec(D['roas'], lang)}x ROAS • {D['g_pat']} patients"),
-                ("Instagram", f"{D['i_pat']} пациента по CRM → {k(D['i_rev'], lang)} {gel} • 637 тыс.+ показов • 6,2 тыс.+ переходов" if ru else
-                 f"{D['i_pat']} CRM-attributed patients → {k(D['i_rev'], lang)} GEL • 637K+ impressions • 6.2K+ link clicks"),
+                ("Google Ads", f"{usd(D['g_spend'], lang)} бюджета → <b>{usd(D['g_rev'], lang)} атрибутированной выручки</b> • ROAS {dec(D['roas'], lang)}× • {D['g_pat']} пациент" if ru else
+                 f"{usd(D['g_spend'], lang)} spend → <b>{usd(D['g_rev'], lang)} attributed revenue</b> • {dec(D['roas'], lang)}x ROAS • {D['g_pat']} patients"),
+                ("Instagram", f"{D['i_pat']} пациента по CRM → {usd(D['i_rev'], lang)} • 637 тыс.+ показов • 6,2 тыс.+ переходов" if ru else
+                 f"{D['i_pat']} CRM-attributed patients → {usd(D['i_rev'], lang)} • 637K+ impressions • 6.2K+ link clicks"),
                 ("Поиск" if ru else "Search", f"{D['seo_pages']} страниц услуг для SEO и Google Ads → {k(D['pages_sessions'], lang)} сессий • {k(D['search_visits'], lang)} переходов из поисковых систем" if ru else
                  f"{D['seo_pages']} service pages for SEO and Google Ads → {k(D['pages_sessions'], lang)} sessions • {k(D['search_visits'], lang)} visits from search engines"),
             ],
@@ -151,9 +150,9 @@ def content(lang):
         ),
     ]
     c["tools_h"] = "Инструменты" if ru else "Tools"
-    c["tools"] = ("Google Ads, Meta Ads, Яндекс Директ, SEO-страницы услуг, CRM, WhatsApp Business, Tilda, Make.com, Kaiten; опросы и глубинные интервью"
+    c["tools"] = ("Google Ads, Meta Ads, Яндекс Директ, SEO-страницы услуг, CRM, WhatsApp Business, Tilda, Figma, Salebot, Kaiten; опросы и глубинные интервью"
                   if ru else
-                  "Google Ads, Meta Ads, Yandex Direct, SEO service pages, CRM, WhatsApp Business, Tilda, Make.com, Kaiten; surveys and in-depth interviews")
+                  "Google Ads, Meta Ads, Yandex Direct, SEO service pages, CRM, WhatsApp Business, Tilda, Figma, Salebot, Kaiten; surveys and in-depth interviews")
     c["foot"] = (f"Кейсы с графиками и дашбордами: {PORTFOLIO}" if ru else f"Cases with charts and dashboards: {PORTFOLIO}/en/")
     return c
 
