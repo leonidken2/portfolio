@@ -10,6 +10,7 @@ from html import escape
 from pathlib import Path
 
 METRIKA_ID = "113589015"  # Yandex Metrica counter number, e.g. "98765432"; empty = no analytics
+PROJ_N8N_URL = "https://github.com/leonidken2/portfolio/tree/main/projects/n8n-ai-outbound"
 SITE_URL = "https://leonidken2.github.io/portfolio"  # e.g. "https://username.github.io/portfolio" — used for og:image / hreflang
 ROOT = Path(__file__).parent
 
@@ -144,7 +145,8 @@ def texts(lang):
     t["name"] = "Леонид Кривошеин" if ru else "Leonid Krivoshein"
     t["skip"] = "К содержанию" if ru else "Skip to content"
     t["nav"] = [("#cases", "Кейсы" if ru else "Cases"), ("#experience", "Опыт" if ru else "Experience"),
-                ("#approach", "Подход" if ru else "Approach"), ("#contact", "Контакты" if ru else "Contact")]
+                ("#approach", "Подход" if ru else "Approach"), ("#projects", "Проекты" if ru else "Projects"),
+                ("#contact", "Контакты" if ru else "Contact")]
     t["lang_link"] = ("en/", "EN", "English version") if ru else ("../", "RU", "Русская версия")
 
     t["h1"] = "Леонид<br>Кривошеин" if ru else "Leonid<br>Krivoshein"
@@ -186,6 +188,17 @@ def texts(lang):
         ("#community", "2018 — 2019", "Медиа-проект и сообщество" if ru else "Media and community project",
          "Рост с нуля через блогеров, взаимный пиар и партнёрства" if ru else "Growth from zero through influencers, referrals and partnerships",
          n(D["c_total"], lang), "подписчиков с нуля" if ru else "followers from zero"),
+    ]
+
+    # side projects (links go to the project folder on GitHub)
+    t["proj_h"] = "Свои проекты" if ru else "Side projects"
+    t["proj_p"] = "Автоматизации для маркетинга и продаж" if ru else "Automations for marketing and sales"
+    t["proj"] = [
+        (PROJ_N8N_URL, "2026", "AI outbound в n8n ↗" if ru else "AI outbound in n8n ↗",
+         "Готовит персональные первые письма HR-директорам: собирает данные о компании, проверяет контакт, пишет письмо через LLM и кладёт черновик в Google-таблицу"
+         if ru else
+         "Drafts personal first emails to HR directors: collects company data, checks the contact, writes the email with an LLM and puts the draft into Google Sheets",
+         "13", "узлов в схеме n8n" if ru else "nodes in the n8n workflow"),
     ]
 
     # ---- OncoDiag
@@ -1018,6 +1031,11 @@ def render(lang):
         f'<a href="{h}"><span class="index-years">{e(y)}</span><span><span class="index-title">{e(ti)}</span>'
         f'<span class="index-desc">{e(de)}</span></span><span class="index-metric">{e(m)}<small>{e(ml)}</small></span></a>'
         for h, y, ti, de, m, ml in t["idx"])
+    proj = "".join(
+        f'<a href="{h}" target="_blank" rel="noopener" data-goal="project_github"><span class="index-years">{e(y)}</span>'
+        f'<span><span class="index-title">{e(ti)}</span><span class="index-desc">{e(de)}</span></span>'
+        f'<span class="index-metric">{e(m)}<small>{e(ml)}</small></span></a>'
+        for h, y, ti, de, m, ml in t["proj"])
 
     # ---- OncoDiag dashboard
     res = hbars([("onco", lab, v, vs) for lab, v, vs in o["res"]], o["res"][0][1], {"onco": "var(--onco)"}, "", ppl_unit, lang)
@@ -1254,6 +1272,11 @@ def render(lang):
   <div class="section-head"><h2>{e(t["app_h"])}</h2><p>{e(t["app_p"])}</p></div>
   <ol class="steps">{steps}</ol>
   <ul class="tools"><li style="border:0;background:none;padding-left:0"><h3>{e(t["tools_h"])}</h3></li>{tools}</ul>
+</div></section>
+
+<section class="section" id="projects" style="padding-top:0"><div class="wrap">
+  <div class="section-head"><h2>{e(t["proj_h"])}</h2><p>{e(t["proj_p"])}</p></div>
+  <div class="index">{proj}</div>
 </div></section>
 
 <section class="section contact" id="contact"><div class="wrap contact-grid">

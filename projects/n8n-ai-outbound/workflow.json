@@ -1,0 +1,738 @@
+{
+  "name": "AI outbound: письма HR-директорам",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        0
+      ],
+      "id": "ff79b9ee-4536-494a-80f7-6e16cdcb9c65",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Outbound demo",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Лист1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -368,
+        0
+      ],
+      "id": "96898e88-9935-42be-a7f5-4c14f9f616cc",
+      "name": "Get row(s) in sheet"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "86d5540b-0968-4a38-81d3-d080ab782095",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.4,
+      "position": [
+        -144,
+        0
+      ],
+      "id": "ce87f3df-2c9d-4e55-bfa9-cea82c74c000",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.site.trim().startsWith('http') ? $json.site.trim() : 'https://' + $json.site.trim() }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          },
+          "timeout": 15000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        80,
+        0
+      ],
+      "id": "de3c3aa0-d578-4a82-a38a-ba9eaf6f54b6",
+      "name": "Сайт компании",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "site_text",
+              "cssSelector": "body",
+              "skipSelectors": "svg, script, style, nav, header, footer"
+            }
+          ]
+        },
+        "options": {
+          "trimValues": true,
+          "cleanUpText": true
+        }
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        304,
+        0
+      ],
+      "id": "59c95901-46af-4d06-aa6f-cb4a303fa455",
+      "name": "Текст сайта",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.hh.ru/vacancies",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "employer_id",
+              "value": "={{ $('Filter').item.json.hh_id }}"
+            },
+            {
+              "name": "per_page",
+              "value": "20"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "HH-User-Agent",
+              "value": "OutboundDemo/1.0 (your-email@example.com)"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        528,
+        0
+      ],
+      "id": "1abd39d3-7023-4189-9350-091d1d24130f",
+      "name": "Вакансии hh",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d93ddb23-9fac-46fc-b973-a7f5cdbc0fc6",
+              "name": "row_number",
+              "value": "={{ $('Filter').item.json.row_number }}",
+              "type": "number"
+            },
+            {
+              "id": "b10b82dc-87ec-4005-85bf-2a1cb9cd6f78",
+              "name": "company",
+              "value": "={{ $('Filter').item.json.company }}",
+              "type": "string"
+            },
+            {
+              "id": "10033e23-1816-48e4-bc11-58c20c38f278",
+              "name": "email",
+              "value": "={{ $('Filter').item.json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "70259384-3c49-4534-abd9-4540de41caba",
+              "name": "vacancies",
+              "value": "={{ $json.items ? $json.found + ' вакансий: ' + $json.items.map(v => v.name).slice(0, 10).join(', ') : $('Filter').item.json.vacancies }}",
+              "type": "string"
+            },
+            {
+              "id": "3532e0d9-e44a-4b20-ad80-60e3aa0f9c35",
+              "name": "site_text",
+              "value": "={{ ($('Текст сайта').item.json.site_text || '').slice(0, 2000) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        720,
+        0
+      ],
+      "id": "7dab3226-3620-4fe7-aa33-f4b2341caead",
+      "name": "Карточка компании",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "a5095d68-ec1b-49b8-831d-55bf800c6699",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "8a11f8c8-9b73-4687-9b88-92c22a7bc85c",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "^[^@\\s]+@[^@\\s]+\\.[a-z]{2,}$",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        944,
+        0
+      ],
+      "id": "9a758429-0126-43c3-b3bb-7af901090419",
+      "name": "Есть контакт?"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Ты пишешь первое холодное письмо HR-директору от имени сервиса ИИ-интервью для работодателей.\n\nКак работает сервис: кандидат проходит короткое видеоинтервью с ИИ, работодатель получает отчёт по навыкам и оценку кандидата. Рекрутер тратит время только на сильных.\n\nДанные о компании:\nКомпания: {{ $json.company }}\nОткрытые вакансии: {{ $json.vacancies }}\nТекст с сайта (может быть пустым или мусорным, используй только полезное): {{ $json.site_text }}\n\nВерни:\n1. summary — 1–2 предложения: кого и сколько нанимает компания и где у рекрутеров, скорее всего, нагрузка.\n2. subject — тема до 6 слов: «Найм» + одна должность из вакансий + название компании.\n3. draft — письмо до 80 слов:\n- начни с «Добрый день.»;\n- первая мысль — про их задачу, а не про сервис: что значит для рекрутеров такой объём найма на эти должности. Назови компанию и 1–2 должности из вакансий. Формулируй как предположение («обычно», «скорее всего»), без цифр, которых нет в данных;\n- о сервисе — одно предложение через пользу для рекрутера, без перечисления функций;\n- в конце один простой вопрос: удобно ли показать сервис за 15 минут;\n- короткие предложения, до 20 слов; пиши грамотно, склоняй название компании;\n- на «вы», без слов «уникальный», «инновационный», «идеальный», «оптимизация» и без восклицательных знаков;\n- подпись оставь ровно так: [Имя], [Сервис]. Не придумывай имя.",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": []
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1216,
+        -240
+      ],
+      "id": "0238547b-b909-4526-b502-9e8325abaeb9",
+      "name": "Пишем письмо"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1424,
+        48
+      ],
+      "id": "7ba973d9-6289-4dc8-9890-2c4b6764d949",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"summary\": \"Кого и сколько нанимает компания\",\n  \"subject\": \"Тема письма\",\n  \"draft\": \"Текст письма\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1552,
+        160
+      ],
+      "id": "df29dd9c-e2a6-4d44-ac10-79706a557f6a",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Outbound demo",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Лист1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Карточка компании').item.json.row_number }}",
+            "status": "черновик готов",
+            "summary": "={{ $json.output.summary }}",
+            "subject": "={{ $json.output.subject }}",
+            "draft": "={{ $json.output.draft }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "site",
+              "displayName": "site",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "hh_id",
+              "displayName": "hh_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vacancies",
+              "displayName": "vacancies",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "draft",
+              "displayName": "draft",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1584,
+        -240
+      ],
+      "id": "9fb59078-f170-4b46-b00a-997117753132",
+      "name": "Записать черновик"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Outbound demo",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Лист1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.row_number }}",
+            "status": "нет контакта"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "company",
+              "displayName": "company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "site",
+              "displayName": "site",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "hh_id",
+              "displayName": "hh_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vacancies",
+              "displayName": "vacancies",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "draft",
+              "displayName": "draft",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1168,
+        96
+      ],
+      "id": "50dbcadb-163e-42c7-b530-136ec66e1688",
+      "name": "Отметить: нет контакта"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Сайт компании",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Сайт компании": {
+      "main": [
+        [
+          {
+            "node": "Текст сайта",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Текст сайта": {
+      "main": [
+        [
+          {
+            "node": "Вакансии hh",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Вакансии hh": {
+      "main": [
+        [
+          {
+            "node": "Карточка компании",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Карточка компании": {
+      "main": [
+        [
+          {
+            "node": "Есть контакт?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Есть контакт?": {
+      "main": [
+        [
+          {
+            "node": "Пишем письмо",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Отметить: нет контакта",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Пишем письмо",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Пишем письмо",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Пишем письмо": {
+      "main": [
+        [
+          {
+            "node": "Записать черновик",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "nodeGroups": [],
+  "tags": []
+}
