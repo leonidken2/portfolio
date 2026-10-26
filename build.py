@@ -528,6 +528,10 @@ def texts(lang):
          "Ran the VK (9,000) and Instagram (12,000) communities; referral mechanics brought 10–20 guests a day on a budget of about RUB 20,000 a month."),
     ]
     t["exp"].insert(2, (
+        "2023 — 2024", "Заместитель директора" if ru else "Deputy Director", "Частный детский сад, Грузия" if ru else "Private kindergarten, Georgia",
+        "Группы под разные аудитории и реклама под каждую: заявки 25 → 60 в месяц, выручка с 15 000 до 30 000 лари в месяц, средний чек с 500 до 900 лари." if ru else
+        "Groups for different audiences with separate ads: inquiries 25 → 60 a month, revenue from GEL 15,000 to GEL 30,000 a month, average check from GEL 500 to GEL 900."))
+    t["exp"].insert(3, (
         "2019 — 2023", "Маркетолог на фрилансе" if ru else "Freelance Marketer", "Малый бизнес и эксперты, удалённо" if ru else "Small businesses and experts, remote",
         "Юрист, кофейня, онлайн-школа, психолог, косметология, климат-техника, недвижимость: стратегия, сайты, реклама и контент. "
         "Вебинар юриста — 130 подписчиков за 2 недели, ролик кофейни — 705 тыс. просмотров." if ru else

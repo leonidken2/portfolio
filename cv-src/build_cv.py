@@ -92,7 +92,7 @@ def content(lang):
                 "Предложил и запустил чат-бота в Salebot вместе с разработчиком" if ru else "Proposed and launched a Salebot chatbot with a developer",
                 f"Проверил коммуникацию на конференции PreventMed: <b>{D['pm_materials']}+ материалов</b>, {D['pm_scenarios']} сценария внедрения в клинику; вопросы врачей вернул в обучение" if ru else
                 f"Field-tested messaging at the PreventMed conference: <b>{D['pm_materials']}+ materials</b>, {D['pm_scenarios']} clinic adoption scenarios; doctors' questions fed back into training",
-                f"Поддерживал образовательные мероприятия для <b>{D['hcp']}+ медицинских специалистов</b>" if ru else
+                f"Образовательные мероприятия для <b>{D['hcp']}+ медицинских специалистов</b>" if ru else
                 f"Supported educational activities for <b>{D['hcp']}+ healthcare professionals</b>",
                 f"Веду активацию «Розовый октябрь» с Ситилаб: цифровой календарь здоровья, QR-воронка, ролики для холлов, <b>{n(D['promo'], lang)} промокодов</b>" if ru else
                 f"Running a Pink October activation with Citilab: digital health calendar, QR funnel, lobby videos, <b>{n(D['promo'], lang)} promo codes</b>",
@@ -127,6 +127,23 @@ def content(lang):
                 f"Developed strategy for {D['segments']} audience segments; content system with {D['pillars']} pillars and {D['posts']} posts",
                 f"Снимал фото и видео: врачи, клинические случаи, Reels и Stories; вырастил Instagram до <b>{n(D['followers'], lang)}+ целевых подписчиков</b>" if ru else
                 f"Produced photo and video: doctors, cases, Reels and Stories; grew Instagram to <b>{n(D['followers'], lang)}+ targeted followers</b>",
+            ],
+            extra=None,
+        ),
+        dict(
+            years="2023 — 2024",
+            where="Грузия" if ru else "Georgia",
+            role="Администратор → заместитель директора" if ru else "Administrator → Deputy Director",
+            org="частный детский сад" if ru else "private kindergarten",
+            sub=None,
+            lines=[],
+            bullets=[
+                "Разделил сад на группы под разные аудитории и запустил рекламу под каждую (англоязычные и грузинские, разная цена): заявки <b>25 → 60 в месяц</b>, в среднем 6 новых детей в месяц" if ru else
+                "Split the kindergarten into groups for different audiences with separate ads for each (English-speaking and Georgian, different prices): inquiries <b>25 → 60 a month</b>, 6 new children a month on average",
+                "Выручка <b>с 15 000 до 30 000 лари в месяц</b>: новые группы и рост среднего чека <b>с 500 до 900 лари</b> при полной загрузке" if ru else
+                "Revenue <b>from GEL 15,000 to GEL 30,000 a month</b>: new groups and an average check up <b>from GEL 500 to GEL 900</b> at full capacity",
+                "Вёл Facebook и Instagram, сделал ребрендинг сайта и логотипа; нанимал воспитателей, программиста, дизайнера и SMM-специалиста, в подчинении 6 воспитателей" if ru else
+                "Ran Facebook and Instagram, rebranded the website and logo; hired teachers, a programmer, a designer and an SMM specialist, with 6 teachers reporting to me",
             ],
             extra=None,
         ),
@@ -187,15 +204,12 @@ def content(lang):
             role="Маркетолог" if ru else "Marketer",
             org="котокафе «Мурзик»" if ru else "Murzik cat café",
             sub=None,
-            links=[("instagram.com/cafemurzik16", "https://www.instagram.com/cafemurzik16/")],
             lines=[],
             bullets=[
                 "Вёл сообщества кафе во ВКонтакте (<b>9 000 подписчиков</b>) и Instagram (<b>12 000</b>): контент, таргет, интеграции и посевы в группах ВК, геоточки, бронь прямо в группе" if ru else
                 "Ran the café's communities on VK (<b>9,000 followers</b>) and Instagram (<b>12,000</b>): content, targeted ads, paid placements in VK groups, geo-points, booking right in the group",
-                "Механики «Помоги котикам», «Поделись сторис», «Забери котика из кафе»: рекомендации в Instagram приводили <b>10–20 гостей в день</b>" if ru else
-                "Referral mechanics (Help the cats, Share a story, Take a kitten home): Instagram recommendations brought <b>10–20 guests a day</b>",
-                "Бюджет на привлечение около <b>20 000 ₽ в месяц</b>; система привлечения работает до сих пор" if ru else
-                "Acquisition budget of about <b>RUB 20,000 a month</b>; the system still brings guests today",
+                "Механики «Помоги котикам», «Поделись сторис», «Забери котика из кафе»: рекомендации в Instagram приводили <b>10–20 гостей в день</b> при бюджете около 20 000 ₽ в месяц" if ru else
+                "Referral mechanics (Help the cats, Share a story, Take a kitten home): Instagram recommendations brought <b>10–20 guests a day</b> on a budget of about RUB 20,000 a month",
                 "Помог сменить продукт и позиционирование: свои котята вместо котов из приюта; наладил регулярные фото и видео котят — они стали главным источником гостей" if ru else
                 "Helped change the product and positioning: own kittens instead of shelter cats; set up regular kitten photos and videos, which became the main source of guests",
             ],
@@ -219,7 +233,7 @@ CSS = """
 :root { --ink: #102a35; --ink-2: #4a616c; --muted: #66787f; --line: #d3dde1; --soft: #edf2f4; --blue: #2a78d6; }
 * { box-sizing: border-box; }
 html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-body { margin: 0; font-family: "Geologica", system-ui, sans-serif; color: var(--ink); font-size: 9.6pt; line-height: 1.42; font-weight: 360; }
+body { margin: 0; font-family: "Geologica", system-ui, sans-serif; color: var(--ink); font-size: 9.3pt; line-height: 1.38; font-weight: 360; }
 a { color: inherit; text-decoration: none; }
 b { font-weight: 600; }
 .head { display: grid; grid-template-columns: 1fr 27mm; gap: 8mm; align-items: start; }
