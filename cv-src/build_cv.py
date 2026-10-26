@@ -190,8 +190,8 @@ def content(lang):
             links=[("instagram.com/cafemurzik16", "https://www.instagram.com/cafemurzik16/")],
             lines=[],
             bullets=[
-                "Вырастил сообщества до <b>9 000 во ВКонтакте</b> и <b>12 000 в Instagram</b>: контент, таргет, интеграции и посевы в группах ВК, геоточки, бронь прямо в группе" if ru else
-                "Grew the communities to <b>9,000 on VK</b> and <b>12,000 on Instagram</b>: content, targeted ads, paid placements in VK groups, geo-points, booking right in the group",
+                "Вёл сообщества кафе во ВКонтакте (<b>9 000 подписчиков</b>) и Instagram (<b>12 000</b>): контент, таргет, интеграции и посевы в группах ВК, геоточки, бронь прямо в группе" if ru else
+                "Ran the café's communities on VK (<b>9,000 followers</b>) and Instagram (<b>12,000</b>): content, targeted ads, paid placements in VK groups, geo-points, booking right in the group",
                 "Механики «Помоги котикам», «Поделись сторис», «Забери котика из кафе»: рекомендации в Instagram приводили <b>10–20 гостей в день</b>" if ru else
                 "Referral mechanics (Help the cats, Share a story, Take a kitten home): Instagram recommendations brought <b>10–20 guests a day</b>",
                 "Бюджет на привлечение около <b>20 000 ₽ в месяц</b>; система привлечения работает до сих пор" if ru else
