@@ -523,7 +523,16 @@ def texts(lang):
          "Google Ads, Instagram, SEO, CRM и контент. ROAS 7,9× в Google Ads." if ru else "Google Ads, Instagram, SEO, CRM and content. 7.9x ROAS on Google Ads."),
         ("2018 — 2019", "Founder / Community Growth Lead", "Медиа-проект, Санкт-Петербург" if ru else "Media project, Saint Petersburg",
          "Рост с нуля до 1 800 подписчиков, команда из 10 человек." if ru else "Growth from zero to 1,800 followers, a team of 10."),
+        ("2017 — 2018", "Маркетолог" if ru else "Marketer", "Котокафе «Мурзик», Казань" if ru else "Murzik cat café, Kazan",
+         "ВКонтакте: контент, анкета и бронь в группе, таргет; Instagram; пристройство котиков через репосты." if ru else
+         "VK: content, application form and booking in the group, targeted ads; Instagram; a repost-based mechanic to rehome the cats."),
     ]
+    t["exp"].insert(2, (
+        "2019 — 2023", "Маркетолог на фрилансе" if ru else "Freelance Marketer", "Малый бизнес и эксперты, удалённо" if ru else "Small businesses and experts, remote",
+        "Юрист, кофейня, онлайн-школа, психолог, косметология, климат-техника, недвижимость: стратегия, сайты, реклама и контент. "
+        "Вебинар юриста — 130 подписчиков за 2 недели, ролик кофейни — 705 тыс. просмотров." if ru else
+        "Lawyer, coffee shop, online school, psychologist, cosmetology, HVAC, real estate: strategy, websites, ads and content. "
+        "A lawyer's webinar brought 130 subscribers in 2 weeks; a coffee-shop video reached 705K views."))
 
     # approach
     t["app_h"] = "Как я работаю" if ru else "How I work"

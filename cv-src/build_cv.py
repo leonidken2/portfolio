@@ -55,11 +55,11 @@ def content(lang):
     if ru:
         c["contacts"].append(("Дата рождения", "20.12.1996", None))
     c["summary"] = (
-        f"Маркетолог в HealthTech, медицине и B2B. Начинаю с исследования аудитории и заканчиваю выручкой, которую можно посчитать: "
+        f"Маркетолог с 2017 года, последние 3 года — в HealthTech, медицине и B2B. Начинаю с исследования аудитории и заканчиваю выручкой, которую можно посчитать: "
         f"{usd(D['g_rev'], lang)} атрибутированной выручки при ROAS {dec(D['roas'], lang)}× в Google Ads, {D['g_pat']} пациент, "
         f"GTM-исследование на {D['resp']}+ респондентов и {D['interviews']} интервью."
         if ru else
-        f"Marketer in HealthTech, healthcare and B2B. I start with customer research and finish with revenue you can count: "
+        f"Marketer since 2017, the last 3 years in HealthTech, healthcare and B2B. I start with customer research and finish with revenue you can count: "
         f"{usd(D['g_rev'], lang)} attributed revenue at {dec(D['roas'], lang)}x ROAS on Google Ads, {D['g_pat']} patients, "
         f"GTM research with {D['resp']}+ respondents and {D['interviews']} interviews.")
     c["kpis"] = [
@@ -131,6 +131,40 @@ def content(lang):
             extra=None,
         ),
         dict(
+            years="2019 — 2023",
+            where="удалённо" if ru else "remote",
+            role="Маркетолог на фрилансе" if ru else "Freelance Marketer",
+            org="малый бизнес и эксперты" if ru else "small businesses and experts",
+            sub=None,
+            lines=[
+                ("Юрист" if ru else "Lawyer",
+                 "стратегия, лекция на 11 человек, 10 Reels; YouTube-вебинар → <b>130 подписчиков за 2 недели</b>" if ru else
+                 "strategy, a live lecture for 11 attendees, 10 Reels; YouTube webinar → <b>130 subscribers in 2 weeks</b>"),
+                ("Кофейня" if ru else "Coffee shop",
+                 "Reels и Stories → один ролик набрал <b>705 тыс. просмотров</b>" if ru else
+                 "Reels and Stories → one video reached <b>705K views</b>"),
+                ("Онлайн-школа" if ru else "Online school",
+                 "сайт курса IELTS на Tilda с квизом и реклама в Яндекс Директ" if ru else
+                 "IELTS course site on Tilda with a lead quiz, plus Yandex Direct ads"),
+                ("Психолог" if ru else "Psychologist",
+                 "дизайн в Figma → сайт на WordPress, Яндекс.Метрика, тест Google Ads" if ru else
+                 "Figma design → WordPress site, Yandex Metrica, Google Ads test"),
+                ("Косметология" if ru else "Cosmetology",
+                 "2 месяца консалтинга: аудит продаж, CRM с уведомлениями в WhatsApp" if ru else
+                 "2-month consulting: sales audit, CRM with WhatsApp notifications"),
+                ("Климат-техника" if ru else "HVAC",
+                 "маркетинговая стратегия и сайт компании" if ru else "marketing strategy and company website"),
+                ("Недвижимость" if ru else "Real estate",
+                 "продавал вторичное жильё в Санкт-Петербурге, SMM для агента" if ru else
+                 "sold resale homes in Saint Petersburg, SMM for an agent"),
+                ("TikTok",
+                 "консультировал авторов, в том числе по запуску прямых эфиров" if ru else
+                 "consulted creators, including on launching live streams"),
+            ],
+            bullets=[],
+            extra=("Параллельно снимал фото и видео для бизнеса." if ru else "Alongside: photo and video production for businesses."),
+        ),
+        dict(
             years="2018 — 2019",
             where="Санкт-Петербург" if ru else "Saint Petersburg",
             role="Основатель / Community Growth Lead" if ru else "Founder / Community Growth Lead",
@@ -146,6 +180,23 @@ def content(lang):
                 f"Produced {D['c_videos']} storytelling videos; the project was featured on TV",
                 f"Руководил командой из {D['c_team']} человек: еженедельные планёрки, задачи в таск-менеджере" if ru else
                 f"Led a team of {D['c_team']}: weekly planning, tasks in a task manager",
+            ],
+            extra=None,
+        ),
+        dict(
+            years="2017 — 2018",
+            where="Казань" if ru else "Kazan",
+            role="Маркетолог" if ru else "Marketer",
+            org="котокафе «Мурзик»" if ru else "Murzik cat café",
+            sub=None,
+            lines=[],
+            bullets=[
+                "Выстроил контент-процесс во ВКонтакте, сделал анкету и бронирование прямо в группе" if ru else
+                "Set up the VK content process, with an application form and booking right in the group",
+                "Запустил таргетированную рекламу ВКонтакте, затем Instagram с автопостингом" if ru else
+                "Launched VK targeted ads, then Instagram with autoposting",
+                "Запустил механику пристройства котиков через репосты" if ru else
+                "Launched a repost-based mechanic to find homes for the café's cats",
             ],
             extra=None,
         ),
@@ -221,7 +272,7 @@ def html(lang):
     for j in c["jobs"]:
         sub = f'<p class="sub">{e(j["sub"])}</p>' if j["sub"] else ""
         lines = ("<dl class=\"lines\">" + "".join(f"<dt>{e(a)}</dt><dd>{b}</dd>" for a, b in j["lines"]) + "</dl>") if j["lines"] else ""
-        bullets = "<ul>" + "".join(f"<li>{b}</li>" for b in j["bullets"]) + "</ul>"
+        bullets = ("<ul>" + "".join(f"<li>{b}</li>" for b in j["bullets"]) + "</ul>") if j["bullets"] else ""
         extra = f'<p class="extra">{e(j["extra"])}</p>' if j["extra"] else ""
         jobs.append(f'<section class="job"><div class="when"><b>{e(j["years"])}</b>{e(j["where"])}</div>'
                     f'<div><h3>{e(j["role"])}, <span>{e(j["org"])}</span></h3>{sub}{lines}{bullets}{extra}</div></section>')
