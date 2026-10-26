@@ -524,8 +524,8 @@ def texts(lang):
         ("2018 — 2019", "Founder / Community Growth Lead", "Медиа-проект, Санкт-Петербург" if ru else "Media project, Saint Petersburg",
          "Рост с нуля до 1 800 подписчиков, команда из 10 человек." if ru else "Growth from zero to 1,800 followers, a team of 10."),
         ("2017 — 2018", "Маркетолог" if ru else "Marketer", "Котокафе «Мурзик», Казань" if ru else "Murzik cat café, Kazan",
-         "ВКонтакте: контент, анкета и бронь в группе, таргет; Instagram; пристройство котиков через репосты." if ru else
-         "VK: content, application form and booking in the group, targeted ads; Instagram; a repost-based mechanic to rehome the cats."),
+         "Сообщества до 9 000 во ВКонтакте и 12 000 в Instagram, рекомендательные механики — 10–20 гостей в день. Бюджет около 20 000 ₽ в месяц при выручке от 250 000 ₽." if ru else
+         "Communities grown to 9,000 on VK and 12,000 on Instagram; referral mechanics brought 10–20 guests a day. About RUB 20,000 a month in budget against RUB 250,000+ in revenue."),
     ]
     t["exp"].insert(2, (
         "2019 — 2023", "Маркетолог на фрилансе" if ru else "Freelance Marketer", "Малый бизнес и эксперты, удалённо" if ru else "Small businesses and experts, remote",

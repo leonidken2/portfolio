@@ -119,11 +119,11 @@ def content(lang):
             bullets=[
                 "Построил и вёл 3 воронки привлечения и связал рекламу со страницами услуг, CRM, WhatsApp, записью, пациентами и выручкой" if ru else
                 "Built and ran 3 acquisition funnels, linking ads to service pages, CRM, WhatsApp, appointments, patients and revenue",
-                f"Запустил поисковые кампании Google Ads под отдельные услуги: около <b>{k(D['ads_service_clicks'], lang)} кликов</b> прямо на страницы услуг" if ru else
+                f"Поисковые кампании Google Ads под каждую услугу: около <b>{k(D['ads_service_clicks'], lang)} кликов</b> прямо на страницы услуг" if ru else
                 f"Ran per-service Google Ads search campaigns: about <b>{k(D['ads_service_clicks'], lang)} clicks</b> straight to service pages",
                 f"Разобрал <b>{D['leads_total']} заявки</b> с сайта: среди тех, где указан источник, {D['search_share']}% пришли из поиска Google и Яндекса" if ru else
                 f"Analysed <b>{D['leads_total']} site leads</b>: of those naming a source, {D['search_share']}% came from Google or Yandex search",
-                f"Разработал стратегию для {D['segments']} сегментов аудитории; контент-система из {D['pillars']} рубрик и {D['posts']} постов" if ru else
+                f"Стратегия для {D['segments']} сегментов аудитории; контент-система из {D['pillars']} рубрик и {D['posts']} постов" if ru else
                 f"Developed strategy for {D['segments']} audience segments; content system with {D['pillars']} pillars and {D['posts']} posts",
                 f"Снимал фото и видео: врачи, клинические случаи, Reels и Stories; вырастил Instagram до <b>{n(D['followers'], lang)}+ целевых подписчиков</b>" if ru else
                 f"Produced photo and video: doctors, cases, Reels and Stories; grew Instagram to <b>{n(D['followers'], lang)}+ targeted followers</b>",
@@ -150,7 +150,7 @@ def content(lang):
                  "дизайн в Figma → сайт на WordPress, Яндекс.Метрика, тест Google Ads" if ru else
                  "Figma design → WordPress site, Yandex Metrica, Google Ads test"),
                 ("Косметология" if ru else "Cosmetology",
-                 "2 месяца консалтинга: аудит продаж, CRM с уведомлениями в WhatsApp" if ru else
+                 "2 месяца консалтинга: аудит продаж, CRM с WhatsApp-уведомлениями" if ru else
                  "2-month consulting: sales audit, CRM with WhatsApp notifications"),
                 ("Климат-техника" if ru else "HVAC",
                  "маркетинговая стратегия и сайт компании" if ru else "marketing strategy and company website"),
@@ -162,7 +162,7 @@ def content(lang):
                  "consulted creators, including on launching live streams"),
             ],
             bullets=[],
-            extra=("Параллельно снимал фото и видео для бизнеса." if ru else "Alongside: photo and video production for businesses."),
+            extra=None,
         ),
         dict(
             years="2018 — 2019",
@@ -176,10 +176,8 @@ def content(lang):
                 f"Grew the community from zero to <b>{n(D['c_total'], lang)} followers</b>: {D['c_integr']} influencer integrations, the best brought <b>+{D['c_best']}</b>; referral mechanic — {D['c_act']} activations → <b>+{D['c_ref']}</b>",
                 f"Провёл благотворительную акцию с {D['c_partners']} брендами: {D['c_comments']}+ комментариев, {n(D['c_charity'], lang)} ₽ перечислено в фонд" if ru else
                 f"Ran a charity campaign with {D['c_partners']} partner brands: {D['c_comments']}+ comments, RUB {n(D['c_charity'], lang)} donated",
-                f"Спродюсировал {D['c_videos']} видеоисторий участников; проект показали по телевидению" if ru else
-                f"Produced {D['c_videos']} storytelling videos; the project was featured on TV",
-                f"Руководил командой из {D['c_team']} человек: еженедельные планёрки, задачи в таск-менеджере" if ru else
-                f"Led a team of {D['c_team']}: weekly planning, tasks in a task manager",
+                f"Руководил командой из {D['c_team']} человек, спродюсировал {D['c_videos']} видеоисторий; проект показали по телевидению" if ru else
+                f"Led a team of {D['c_team']} and produced {D['c_videos']} storytelling videos; the project was featured on TV",
             ],
             extra=None,
         ),
@@ -189,14 +187,17 @@ def content(lang):
             role="Маркетолог" if ru else "Marketer",
             org="котокафе «Мурзик»" if ru else "Murzik cat café",
             sub=None,
+            links=[("vk.ru/cafemurzik16", "https://vk.ru/cafemurzik16"), ("instagram.com/cafemurzik16", "https://www.instagram.com/cafemurzik16/"), ("t.me/cafemurzik16", "https://t.me/cafemurzik16")],
             lines=[],
             bullets=[
-                "Выстроил контент-процесс во ВКонтакте, сделал анкету и бронирование прямо в группе" if ru else
-                "Set up the VK content process, with an application form and booking right in the group",
-                "Запустил таргетированную рекламу ВКонтакте, затем Instagram с автопостингом" if ru else
-                "Launched VK targeted ads, then Instagram with autoposting",
-                "Запустил механику пристройства котиков через репосты" if ru else
-                "Launched a repost-based mechanic to find homes for the café's cats",
+                "Вырастил сообщества до <b>9 000 во ВКонтакте</b> и <b>12 000 в Instagram</b>: контент, таргет, интеграции и посевы в группах ВК, геоточки, бронь прямо в группе" if ru else
+                "Grew the communities to <b>9,000 on VK</b> and <b>12,000 on Instagram</b>: content, targeted ads, paid placements in VK groups, geo-points, booking right in the group",
+                "Механики «Помоги котикам», «Поделись сторис», «Забери котика из кафе»: рекомендации в Instagram приводили <b>10–20 гостей в день</b>" if ru else
+                "Referral mechanics (Help the cats, Share a story, Take a kitten home): Instagram recommendations brought <b>10–20 guests a day</b>",
+                "Бюджет около <b>20 000 ₽ в месяц</b> при выручке кафе <b>от 250 000 ₽</b> (до 500 000 ₽ в сильные месяцы): маркетинг окупался и приводит гостей до сих пор" if ru else
+                "Budget of about <b>RUB 20,000 a month</b> against café revenue of <b>RUB 250,000+</b> (up to RUB 500,000 in strong months): marketing paid for itself and still brings guests today",
+                "Помог сменить продукт и позиционирование: свои котята вместо котов из приюта; наладил регулярные фото и видео котят — они стали главным источником гостей" if ru else
+                "Helped change the product and positioning: own kittens instead of shelter cats; set up regular kitten photos and videos, which became the main source of guests",
             ],
             extra=None,
         ),
@@ -237,7 +238,7 @@ h1 { margin: 0; font-size: 25pt; font-weight: 700; letter-spacing: -0.03em; line
 .kpi b { display: block; font-size: 13.5pt; font-weight: 650; letter-spacing: -0.02em; line-height: 1.15; white-space: nowrap; }
 .kpi span { display: block; font-size: 7.8pt; color: var(--ink-2); line-height: 1.25; margin-top: 0.6mm; }
 h2 { margin: 5.5mm 0 0; font-size: 12pt; font-weight: 650; letter-spacing: -0.01em; padding-bottom: 1.6mm; border-bottom: 1.2pt solid var(--ink); }
-.job { display: grid; grid-template-columns: 30mm 1fr; gap: 5mm; padding: 3.4mm 0 3.2mm; border-bottom: 0.6pt solid var(--line); }
+.job { display: grid; grid-template-columns: 30mm 1fr; gap: 5mm; padding: 2.8mm 0 2.6mm; border-bottom: 0.6pt solid var(--line); }
 .job h3, .job .sub, .lines, li, .extra { break-inside: avoid; }
 .job h3 { break-after: avoid; }
 .job:last-of-type { border-bottom: 0; }
@@ -246,6 +247,7 @@ h2 { margin: 5.5mm 0 0; font-size: 12pt; font-weight: 650; letter-spacing: -0.01
 .job h3 { margin: 0; font-size: 10.6pt; font-weight: 620; line-height: 1.3; }
 .job h3 span { font-weight: 420; color: var(--ink-2); }
 .sub { margin: 0.8mm 0 0; color: var(--ink-2); font-size: 9.2pt; }
+.sub .lnk { color: var(--blue); border-bottom: 0.6pt solid var(--blue); }
 .lines { margin: 1.8mm 0 0; display: grid; grid-template-columns: auto 1fr; gap: 0.6mm 3mm; font-size: 9.2pt; }
 .lines dt { font-weight: 600; }
 .lines dd { margin: 0; }
@@ -255,7 +257,7 @@ li::before { content: ""; position: absolute; left: 0; top: 2.1mm; width: 2mm; h
 .extra { margin: 1.8mm 0 0; font-size: 9pt; color: var(--ink-2); }
 .tools { display: grid; grid-template-columns: 30mm 1fr; gap: 5mm; padding-top: 3mm; font-size: 9.2pt; }
 .tools b { font-weight: 600; }
-.foot { margin-top: 4mm; padding-top: 2.5mm; border-top: 0.6pt solid var(--line); font-size: 8.6pt; color: var(--ink-2); }
+.foot { margin-top: 3mm; padding-top: 2mm; border-top: 0.6pt solid var(--line); font-size: 8.6pt; color: var(--ink-2); }
 .foot a { color: var(--blue); }
 """
 
@@ -271,6 +273,8 @@ def html(lang):
     jobs = []
     for j in c["jobs"]:
         sub = f'<p class="sub">{e(j["sub"])}</p>' if j["sub"] else ""
+        if j.get("links"):
+            sub += '<p class="sub">' + " · ".join(f'<a class="lnk" href="{e(u)}">{e(t)}</a>' for t, u in j["links"]) + "</p>"
         lines = ("<dl class=\"lines\">" + "".join(f"<dt>{e(a)}</dt><dd>{b}</dd>" for a, b in j["lines"]) + "</dl>") if j["lines"] else ""
         bullets = ("<ul>" + "".join(f"<li>{b}</li>" for b in j["bullets"]) + "</ul>") if j["bullets"] else ""
         extra = f'<p class="extra">{e(j["extra"])}</p>' if j["extra"] else ""
