@@ -469,7 +469,7 @@ def texts(lang):
         f"Договорился о <b>{D['c_integr']} интеграциях</b> с блогерами; лучшая коллаборация принесла <b>+{D['c_best']} подписчиков</b>" if ru else f"Organized <b>{D['c_integr']} influencer integrations</b>; the best collaboration brought <b>+{D['c_best']} followers</b>",
         f"Придумал механику взаимного пиара: аудит аккаунта подписчика и репост в Stories в обмен на репост проекта. <b>{D['c_act']} активаций</b> дали <b>+{D['c_ref']} подписчиков</b>" if ru else f"Built a referral mechanic: an account audit and a Stories shout-out in exchange for sharing the project. <b>{D['c_act']} activations</b> brought <b>+{D['c_ref']} followers</b>",
         "Запустил «день блогера»: гость вёл аккаунт проекта весь день, вечером — совместный эфир" if ru else "Ran takeovers: a guest blogger hosted the account for a day, ending with a joint live stream",
-        f"Провёл благотворительную акцию с <b>{D['c_partners']} брендами</b>: {D['c_comments']}+ комментариев, <b>{n(D['c_charity'], lang)} рублей</b> перечислено в фонд" if ru else f"Ran a charity campaign with <b>{D['c_partners']} partner brands</b>: {D['c_comments']}+ comments, <b>RUB {n(D['c_charity'], lang)}</b> donated to a foundation",
+        f"Провёл благотворительную акцию с <b>{D['c_partners']} брендами</b>: {D['c_comments']}+ комментариев, <b>около $470</b> перечислено в фонд" if ru else f"Ran a charity campaign with <b>{D['c_partners']} partner brands</b>: {D['c_comments']}+ comments, <b>about $470</b> donated to a foundation",
         f"Спродюсировал <b>{D['c_videos']} видеоисторий</b> участников; проект показали по телевидению" if ru else f"Produced <b>{D['c_videos']} storytelling videos</b>; the project was featured on TV",
         f"Руководил командой из <b>{D['c_team']} человек</b>: еженедельные планёрки, задачи в таск-менеджере" if ru else f"Led a cross-functional team of <b>{D['c_team']}</b>: weekly planning, tasks in a task manager",
     ]
@@ -479,7 +479,7 @@ def texts(lang):
         (str(D["c_integr"]), "интеграций с блогерами" if ru else "influencer integrations"),
         (str(D["c_act"]), "активаций взаимного пиара" if ru else "referral activations"),
         (str(D["c_partners"]), "брендов-партнёров" if ru else "partner brands"),
-        (f"{n(D['c_charity'], lang)}" if ru else f"RUB {n(D['c_charity'], lang)}", "рублей в благотворительный фонд" if ru else "raised for charity"),
+        ("~$470", "в благотворительный фонд" if ru else "raised for charity"),
         (str(D["c_videos"]), "видеоисторий и эфир на ТВ" if ru else "story videos, plus TV"),
     ]
     c["wf_h"] = f"Откуда пришли {n(D['c_total'], lang)} подписчиков" if ru else f"Where the {n(D['c_total'], lang)} followers came from"
@@ -524,19 +524,19 @@ def texts(lang):
         ("2018 — 2019", "Founder / Community Growth Lead", "Медиа-проект, Санкт-Петербург" if ru else "Media project, Saint Petersburg",
          "Рост с нуля до 1 800 подписчиков, команда из 10 человек." if ru else "Growth from zero to 1,800 followers, a team of 10."),
         ("2017 — 2018", "Маркетолог" if ru else "Marketer", "Котокафе «Мурзик», Казань" if ru else "Murzik cat café, Kazan",
-         "Вёл сообщества во ВКонтакте (9 000) и Instagram (12 000); рекомендательные механики — 10–20 гостей в день при бюджете около 20 000 ₽ в месяц." if ru else
-         "Ran the VK (9,000) and Instagram (12,000) communities; referral mechanics brought 10–20 guests a day on a budget of about RUB 20,000 a month."),
+         "Вёл сообщества во ВКонтакте (9 000) и Instagram (12 000); рекомендательные механики — 10–20 гостей в день при бюджете около $330 в месяц." if ru else
+         "Ran the VK (9,000) and Instagram (12,000) communities; referral mechanics brought 10–20 guests a day on a budget of about $330 a month."),
     ]
     t["exp"].insert(2, (
         "2023 — 2024", "Заместитель директора" if ru else "Deputy Director", "Частный детский сад, Грузия" if ru else "Private kindergarten, Georgia",
-        "Группы под разные аудитории и реклама под каждую: заявки 25 → 60 в месяц, выручка с 15 000 до 30 000 лари в месяц, средний чек с 500 до 900 лари." if ru else
-        "Groups for different audiences with separate ads: inquiries 25 → 60 a month, revenue from GEL 15,000 to GEL 30,000 a month, average check from GEL 500 to GEL 900."))
+        f"Группы под разные аудитории и реклама под каждую: заявки 25 → 60 в месяц, выручка с {usd(15000, lang)} до {usd(30000, lang)} в месяц, средний чек с {usd(500, lang)} до {usd(900, lang)}." if ru else
+        f"Groups for different audiences with separate ads: inquiries 25 → 60 a month, revenue from {usd(15000, lang)} to {usd(30000, lang)} a month, average check from {usd(500, lang)} to {usd(900, lang)}."))
     t["exp"].insert(3, (
         "2019 — 2023", "Маркетолог на фрилансе" if ru else "Freelance Marketer", "Малый бизнес и эксперты, удалённо" if ru else "Small businesses and experts, remote",
-        "Юрист, кофейня, онлайн-школа, психолог, косметология, климат-техника, недвижимость: стратегия, сайты, реклама и контент. "
-        "Вебинар юриста — 130 подписчиков за 2 недели, ролик кофейни — 705 тыс. просмотров." if ru else
-        "Lawyer, coffee shop, online school, psychologist, cosmetology, HVAC, real estate: strategy, websites, ads and content. "
-        "A lawyer's webinar brought 130 subscribers in 2 weeks; a coffee-shop video reached 705K views."))
+        "Юрист, кофейня, блинная, онлайн-школа, психолог, косметология, климат-техника, недвижимость: стратегия, сайты, реклама и контент. "
+        "Ролик блинной — 73 тыс. просмотров и 1 000 подписчиков, ролик кофейни — 705 тыс. просмотров." if ru else
+        "Lawyer, coffee shop, crêperie, online school, psychologist, cosmetology, HVAC, real estate: strategy, websites, ads and content. "
+        "A crêperie video brought 73K views and 1,000 followers; a coffee-shop video reached 705K views."))
 
     # approach
     t["app_h"] = "Как я работаю" if ru else "How I work"

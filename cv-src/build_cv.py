@@ -140,8 +140,8 @@ def content(lang):
             bullets=[
                 "Разделил сад на группы под разные аудитории и запустил рекламу под каждую (англоязычные и грузинские, разная цена): заявки <b>25 → 60 в месяц</b>, в среднем 6 новых детей в месяц" if ru else
                 "Split the kindergarten into groups for different audiences with separate ads for each (English-speaking and Georgian, different prices): inquiries <b>25 → 60 a month</b>, 6 new children a month on average",
-                "Выручка <b>с 15 000 до 30 000 лари в месяц</b>: новые группы и рост среднего чека <b>с 500 до 900 лари</b> при полной загрузке" if ru else
-                "Revenue <b>from GEL 15,000 to GEL 30,000 a month</b>: new groups and an average check up <b>from GEL 500 to GEL 900</b> at full capacity",
+                f"Выручка <b>с {usd(15000, lang)} до {usd(30000, lang)} в месяц</b>: новые группы и рост среднего чека <b>с {usd(500, lang)} до {usd(900, lang)}</b> при полной загрузке" if ru else
+                f"Revenue <b>from {usd(15000, lang)} to {usd(30000, lang)} a month</b>: new groups and an average check up <b>from {usd(500, lang)} to {usd(900, lang)}</b> at full capacity",
                 "Вёл Facebook и Instagram, сделал ребрендинг сайта и логотипа; нанимал воспитателей, программиста, дизайнера и SMM-специалиста, в подчинении 6 воспитателей" if ru else
                 "Ran Facebook and Instagram, rebranded the website and logo; hired teachers, a programmer, a designer and an SMM specialist, with 6 teachers reporting to me",
             ],
@@ -155,11 +155,14 @@ def content(lang):
             sub=None,
             lines=[
                 ("Юрист" if ru else "Lawyer",
-                 "стратегия, лекция на 11 человек, 10 Reels; YouTube-вебинар → <b>130 подписчиков за 2 недели</b>" if ru else
-                 "strategy, a live lecture for 11 attendees, 10 Reels; YouTube webinar → <b>130 subscribers in 2 weeks</b>"),
+                 "рост через короткие Reels → <b>150 подписчиков с одного ролика</b>" if ru else
+                 "growth through short Reels → <b>150 followers from one video</b>"),
                 ("Кофейня" if ru else "Coffee shop",
                  "Reels и Stories → один ролик набрал <b>705 тыс. просмотров</b>" if ru else
                  "Reels and Stories → one video reached <b>705K views</b>"),
+                ("Блинная" if ru else "Crêperie",
+                 "ролик → <b>73 тыс. просмотров</b>, 125 комментариев и <b>1 000 подписчиков</b>; подарок каждому сотому подписчику" if ru else
+                 "one video → <b>73K views</b>, 125 comments and <b>1,000 followers</b>; a gift for every 100th follower"),
                 ("Онлайн-школа" if ru else "Online school",
                  "сайт курса IELTS на Tilda с квизом и реклама в Яндекс Директ" if ru else
                  "IELTS course site on Tilda with a lead quiz, plus Yandex Direct ads"),
@@ -169,8 +172,6 @@ def content(lang):
                 ("Косметология" if ru else "Cosmetology",
                  "2 месяца консалтинга: аудит продаж, CRM с WhatsApp-уведомлениями" if ru else
                  "2-month consulting: sales audit, CRM with WhatsApp notifications"),
-                ("Климат-техника" if ru else "HVAC",
-                 "маркетинговая стратегия и сайт компании" if ru else "marketing strategy and company website"),
                 ("Недвижимость" if ru else "Real estate",
                  "продавал вторичное жильё в Санкт-Петербурге, SMM для агента" if ru else
                  "sold resale homes in Saint Petersburg, SMM for an agent"),
@@ -191,8 +192,8 @@ def content(lang):
             bullets=[
                 f"Вырастил сообщество с нуля до <b>{n(D['c_total'], lang)} подписчиков</b>: {D['c_integr']} интеграций с блогерами, лучшая дала <b>+{D['c_best']}</b>; механика взаимного пиара — {D['c_act']} активаций → <b>+{D['c_ref']}</b>" if ru else
                 f"Grew the community from zero to <b>{n(D['c_total'], lang)} followers</b>: {D['c_integr']} influencer integrations, the best brought <b>+{D['c_best']}</b>; referral mechanic — {D['c_act']} activations → <b>+{D['c_ref']}</b>",
-                f"Провёл благотворительную акцию с {D['c_partners']} брендами: {D['c_comments']}+ комментариев, {n(D['c_charity'], lang)} ₽ перечислено в фонд" if ru else
-                f"Ran a charity campaign with {D['c_partners']} partner brands: {D['c_comments']}+ comments, RUB {n(D['c_charity'], lang)} donated",
+                f"Провёл благотворительную акцию с {D['c_partners']} брендами: {D['c_comments']}+ комментариев, около $470 перечислено в фонд" if ru else
+                f"Ran a charity campaign with {D['c_partners']} partner brands: {D['c_comments']}+ comments, about $470 donated",
                 f"Руководил командой из {D['c_team']} человек, спродюсировал {D['c_videos']} видеоисторий; проект показали по телевидению" if ru else
                 f"Led a team of {D['c_team']} and produced {D['c_videos']} storytelling videos; the project was featured on TV",
             ],
@@ -208,8 +209,8 @@ def content(lang):
             bullets=[
                 "Вёл сообщества кафе во ВКонтакте (<b>9 000 подписчиков</b>) и Instagram (<b>12 000</b>): контент, таргет, интеграции и посевы в группах ВК, геоточки, бронь прямо в группе" if ru else
                 "Ran the café's communities on VK (<b>9,000 followers</b>) and Instagram (<b>12,000</b>): content, targeted ads, paid placements in VK groups, geo-points, booking right in the group",
-                "Механики «Помоги котикам», «Поделись сторис», «Забери котика из кафе»: рекомендации в Instagram приводили <b>10–20 гостей в день</b> при бюджете около 20 000 ₽ в месяц" if ru else
-                "Referral mechanics (Help the cats, Share a story, Take a kitten home): Instagram recommendations brought <b>10–20 guests a day</b> on a budget of about RUB 20,000 a month",
+                "Механики «Помоги котикам», «Поделись сторис», «Забери котика из кафе»: рекомендации в Instagram приводили <b>10–20 гостей в день</b> при бюджете около $330 в месяц" if ru else
+                "Referral mechanics (Help the cats, Share a story, Take a kitten home): Instagram recommendations brought <b>10–20 guests a day</b> on a budget of about $330 a month",
                 "Помог сменить продукт и позиционирование: свои котята вместо котов из приюта; наладил регулярные фото и видео котят — они стали главным источником гостей" if ru else
                 "Helped change the product and positioning: own kittens instead of shelter cats; set up regular kitten photos and videos, which became the main source of guests",
             ],
