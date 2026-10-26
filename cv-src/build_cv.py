@@ -133,7 +133,7 @@ def content(lang):
         dict(
             years="2023 — 2024",
             where="Грузия" if ru else "Georgia",
-            role="Администратор → заместитель директора" if ru else "Administrator → Deputy Director",
+            role="Заместитель директора" if ru else "Deputy Director",
             org="частный детский сад" if ru else "private kindergarten",
             sub=None,
             lines=[],
