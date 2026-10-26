@@ -187,15 +187,15 @@ def content(lang):
             role="Маркетолог" if ru else "Marketer",
             org="котокафе «Мурзик»" if ru else "Murzik cat café",
             sub=None,
-            links=[("vk.ru/cafemurzik16", "https://vk.ru/cafemurzik16"), ("instagram.com/cafemurzik16", "https://www.instagram.com/cafemurzik16/"), ("t.me/cafemurzik16", "https://t.me/cafemurzik16")],
+            links=[("instagram.com/cafemurzik16", "https://www.instagram.com/cafemurzik16/")],
             lines=[],
             bullets=[
                 "Вырастил сообщества до <b>9 000 во ВКонтакте</b> и <b>12 000 в Instagram</b>: контент, таргет, интеграции и посевы в группах ВК, геоточки, бронь прямо в группе" if ru else
                 "Grew the communities to <b>9,000 on VK</b> and <b>12,000 on Instagram</b>: content, targeted ads, paid placements in VK groups, geo-points, booking right in the group",
                 "Механики «Помоги котикам», «Поделись сторис», «Забери котика из кафе»: рекомендации в Instagram приводили <b>10–20 гостей в день</b>" if ru else
                 "Referral mechanics (Help the cats, Share a story, Take a kitten home): Instagram recommendations brought <b>10–20 guests a day</b>",
-                "Бюджет около <b>20 000 ₽ в месяц</b> при выручке кафе <b>от 250 000 ₽</b> (до 500 000 ₽ в сильные месяцы): маркетинг окупался и приводит гостей до сих пор" if ru else
-                "Budget of about <b>RUB 20,000 a month</b> against café revenue of <b>RUB 250,000+</b> (up to RUB 500,000 in strong months): marketing paid for itself and still brings guests today",
+                "Бюджет на привлечение около <b>20 000 ₽ в месяц</b>; система привлечения работает до сих пор" if ru else
+                "Acquisition budget of about <b>RUB 20,000 a month</b>; the system still brings guests today",
                 "Помог сменить продукт и позиционирование: свои котята вместо котов из приюта; наладил регулярные фото и видео котят — они стали главным источником гостей" if ru else
                 "Helped change the product and positioning: own kittens instead of shelter cats; set up regular kitten photos and videos, which became the main source of guests",
             ],
